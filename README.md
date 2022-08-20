@@ -8,3 +8,5 @@ go get -u github.com/code-gorilla-au/mewl
 ```
 
 ## Doc
+
+<!-- gomarkdoc:embed -->

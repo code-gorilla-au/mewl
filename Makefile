@@ -15,6 +15,9 @@ scan: ## run security scan
 	gosec ./...
 	go vet ./...
 
+docgen: scan test ## generate go doc and append to readme.
+	gomarkdoc -o README.md -e .
+
 # HELP
 # This will output the help for each task
 # thanks to https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
