@@ -2,9 +2,16 @@ package mewl
 
 import (
 	"testing"
+	"time"
 
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 )
+
+type CmpUUID struct {
+	id   uuid.UUID
+	date time.Time
+}
 
 type KeyVal struct {
 	Key   string
@@ -219,4 +226,25 @@ func TestReduce_int(t *testing.T) {
 	got := add(1)
 
 	assert.Equal(t, 7, got)
+}
+
+func TestUnion(t *testing.T) {
+	id := uuid.New()
+	now := time.Now()
+	lists := [][]CmpUUID{
+		{
+			{
+				id:   id,
+				date: now,
+			},
+			{
+				id:   id,
+				date: now,
+			},
+		},
+	}
+
+	got := Union(lists...)
+
+	assert.Equal(t, 1, len(got))
 }

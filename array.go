@@ -45,6 +45,25 @@ func Unique[T comparable](list []T) []T {
 	return result
 }
 
+// Union - merges two lists into a slice with no duplicates composed of the elements of each list.
+func Union[T comparable](lists ...[]T) []T {
+	cache := make(map[T]struct{}, 0)
+	var result []T
+
+	for _, list := range lists {
+		for _, item := range list {
+			if _, ok := cache[item]; ok {
+				continue
+			}
+
+			result = append(result, item)
+			cache[item] = struct{}{}
+		}
+	}
+
+	return result
+}
+
 // Find - returns the first element in the provided array that satisfies the provided testing function.
 // If item is not found return nil value.
 func Find[T any](list []T, fn PredicateFunc[T]) (T, bool) {
