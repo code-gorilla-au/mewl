@@ -15,6 +15,7 @@ import "github.com/code-gorilla-au/mewl"
 - [func Find[T any](list []T, fn PredicateFunc[T]) (T, bool)](<#func-find>)
 - [func ForEach[T comparable](list []T, fn func(input T))](<#func-foreach>)
 - [func Map[T comparable, K any](list []T, fn MapperFunc[T, K]) []K](<#func-map>)
+- [func Union[T comparable](lists ...[]T) []T](<#func-union>)
 - [func Unique[T comparable](list []T) []T](<#func-unique>)
 - [type ComposeFunc](<#type-composefunc>)
   - [func Pipe[T any](fns ...ComposeFunc[T]) ComposeFunc[T]](<#func-pipe>)
@@ -23,7 +24,7 @@ import "github.com/code-gorilla-au/mewl"
 - [type PredicateFunc](<#type-predicatefunc>)
 
 
-## func [Every](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L62>)
+## func [Every](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L81>)
 
 ```go
 func Every[T any](list []T, fn PredicateFunc[T]) bool
@@ -39,7 +40,7 @@ func Filter[T any](list []T, fn PredicateFunc[T]) []T
 
 Filter \- return a new list of elements that return true on the predicate func.
 
-## func [Find](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L50>)
+## func [Find](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L69>)
 
 ```go
 func Find[T any](list []T, fn PredicateFunc[T]) (T, bool)
@@ -63,6 +64,14 @@ func Map[T comparable, K any](list []T, fn MapperFunc[T, K]) []K
 
 Map \- creates a new array populated with the results of calling a provided function on every element in the calling array.
 
+## func [Union](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L49>)
+
+```go
+func Union[T comparable](lists ...[]T) []T
+```
+
+Union \- merges two lists into a slice with no duplicates composed of the elements of each list.
+
 ## func [Unique](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L33>)
 
 ```go
@@ -79,7 +88,7 @@ ComposeFunc \- function that receives an input and returns an input of the same 
 type ComposeFunc[T any] func(T) T
 ```
 
-### func [Pipe](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L86>)
+### func [Pipe](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L105>)
 
 ```go
 func Pipe[T any](fns ...ComposeFunc[T]) ComposeFunc[T]
@@ -87,7 +96,7 @@ func Pipe[T any](fns ...ComposeFunc[T]) ComposeFunc[T]
 
 Pipe \- left to right function composition
 
-### func [Reduce](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L75>)
+### func [Reduce](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L94>)
 
 ```go
 func Reduce[T any](list []T, fn func(prev T, next T) T) ComposeFunc[T]
