@@ -185,8 +185,8 @@ func TestEvery_struct_no_match(t *testing.T) {
 	}
 }
 
-func TestReduce_int(t *testing.T) {
-	add := Reduce(
+func TestPipe_int(t *testing.T) {
+	add := Pipe(
 		func(i int) int {
 			return i + 1
 		},
@@ -195,8 +195,8 @@ func TestReduce_int(t *testing.T) {
 	assert.Equal(t, 2, got)
 
 }
-func TestReduce_int_product(t *testing.T) {
-	add := Reduce(
+func TestPipe_int_product(t *testing.T) {
+	add := Pipe(
 		func(i int) int {
 			return i + 1
 		},
