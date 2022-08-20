@@ -72,6 +72,17 @@ func Every[T any](list []T, fn PredicateFunc[T]) bool {
 // Pipe - executes a user-supplied "reducer" callback function on each element of the array,
 // in order, passing in the return value from the calculation on the preceding element.
 // The final result of running the reducer across all elements of the array is a single value
+func Reduce[T any](list []T, fn func(prev T, next T) T) ComposeFunc[T] {
+	return func(initVal T) T {
+		result := initVal
+		for _, item := range list {
+			result = fn(result, item)
+		}
+		return result
+	}
+}
+
+// Pipe - left to right function composition
 func Pipe[T any](fns ...ComposeFunc[T]) ComposeFunc[T] {
 	return func(input T) T {
 		result := input

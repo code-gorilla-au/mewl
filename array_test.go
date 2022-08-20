@@ -208,3 +208,15 @@ func TestPipe_int_product(t *testing.T) {
 	assert.Equal(t, 4, got)
 
 }
+
+func TestReduce_int(t *testing.T) {
+	list := []int{1, 2, 3}
+
+	add := Reduce(list, func(prev, current int) int {
+		return prev + current
+	})
+
+	got := add(1)
+
+	assert.Equal(t, 7, got)
+}
