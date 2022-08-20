@@ -1,9 +1,5 @@
 package mewl
 
-type PredicateFunc[T any] func(item T) bool
-
-type MapperFunc[T any, K any] func(item T) K
-
 // Filter - return a new list of elements that return true on the predicate func.
 func Filter[T any](list []T, fn PredicateFunc[T]) []T {
 	var result []T
@@ -71,4 +67,17 @@ func Every[T any](list []T, fn PredicateFunc[T]) bool {
 	}
 
 	return true
+}
+
+// Reduce - executes a user-supplied "reducer" callback function on each element of the array,
+// in order, passing in the return value from the calculation on the preceding element.
+// The final result of running the reducer across all elements of the array is a single value
+func Reduce[T any](fns ...ComposeFunc[T]) ComposeFunc[T] {
+	return func(input T) T {
+		result := input
+		for _, fn := range fns {
+			result = fn(result)
+		}
+		return result
+	}
 }
