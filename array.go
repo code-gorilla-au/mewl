@@ -88,7 +88,7 @@ func Every[T any](list []T, fn PredicateFunc[T]) bool {
 	return true
 }
 
-// Pipe - executes a user-supplied "reducer" callback function on each element of the array,
+// Reduce - executes a user-supplied "reducer" callback function on each element of the array,
 // in order, passing in the return value from the calculation on the preceding element.
 // The final result of running the reducer across all elements of the array is a single value
 func Reduce[T any](list []T, fn func(prev T, next T) T) ComposeFunc[T] {
