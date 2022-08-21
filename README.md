@@ -10,11 +10,13 @@ import "github.com/code-gorilla-au/mewl"
 
 ## Index
 
+- [func Chunk[T any](list []T, chunkSize int) [][]T](<#func-chunk>)
 - [func Every[T any](list []T, fn PredicateFunc[T]) bool](<#func-every>)
 - [func Filter[T any](list []T, fn PredicateFunc[T]) []T](<#func-filter>)
 - [func Find[T any](list []T, fn PredicateFunc[T]) (T, bool)](<#func-find>)
 - [func ForEach[T comparable](list []T, fn func(input T))](<#func-foreach>)
 - [func Map[T comparable, K any](list []T, fn MapperFunc[T, K]) []K](<#func-map>)
+- [func Reverse[T comparable](list []T) []T](<#func-reverse>)
 - [func Union[T comparable](lists ...[]T) []T](<#func-union>)
 - [func Unique[T comparable](list []T) []T](<#func-unique>)
 - [type ComposeFunc](<#type-composefunc>)
@@ -23,6 +25,14 @@ import "github.com/code-gorilla-au/mewl"
 - [type MapperFunc](<#type-mapperfunc>)
 - [type PredicateFunc](<#type-predicatefunc>)
 
+
+## func [Chunk](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L114>)
+
+```go
+func Chunk[T any](list []T, chunkSize int) [][]T
+```
+
+Chunk \- creates a new nested slice with slice elements chunked
 
 ## func [Every](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L81>)
 
@@ -63,6 +73,14 @@ func Map[T comparable, K any](list []T, fn MapperFunc[T, K]) []K
 ```
 
 Map \- creates a new array populated with the results of calling a provided function on every element in the calling array.
+
+## func [Reverse](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L105>)
+
+```go
+func Reverse[T comparable](list []T) []T
+```
+
+Reverse \- return slice in reverse order
 
 ## func [Union](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L49>)
 
