@@ -88,7 +88,7 @@ ComposeFunc \- function that receives an input and returns an input of the same 
 type ComposeFunc[T any] func(T) T
 ```
 
-### func [Pipe](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L105>)
+### func [Pipe](<https://github.com/code-gorilla-au/mewl/blob/main/functions.go#L4>)
 
 ```go
 func Pipe[T any](fns ...ComposeFunc[T]) ComposeFunc[T]
