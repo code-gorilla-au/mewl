@@ -224,3 +224,11 @@ func TestUnion(t *testing.T) {
 
 	assert.Equal(t, 1, len(got))
 }
+
+func TestReverse(t *testing.T) {
+	list := []int{1, 2, 3}
+
+	got := Reverse(list)
+
+	assert.Equal(t, []int{3, 2, 1}, got)
+}
