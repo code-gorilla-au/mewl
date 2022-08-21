@@ -232,3 +232,35 @@ func TestReverse(t *testing.T) {
 
 	assert.Equal(t, []int{3, 2, 1}, got)
 }
+
+func TestChunk_even_allocation(t *testing.T) {
+	list := []int{1, 2, 3, 4, 5, 6}
+
+	got := Chunk(list, 2)
+
+	assert.Equal(t, 3, len(got))
+	assert.Equal(t, []int{1, 2}, got[0])
+	assert.Equal(t, []int{3, 4}, got[1])
+	assert.Equal(t, []int{5, 6}, got[2])
+}
+
+func TestChunk_odd_allocation(t *testing.T) {
+	list := []int{1, 2, 3, 4, 5, 6, 7}
+
+	got := Chunk(list, 2)
+
+	assert.Equal(t, 4, len(got))
+	assert.Equal(t, []int{1, 2}, got[0])
+	assert.Equal(t, []int{3, 4}, got[1])
+	assert.Equal(t, []int{5, 6}, got[2])
+	assert.Equal(t, []int{7}, got[3])
+}
+
+func TestChunk_less_than_chunk_size(t *testing.T) {
+	list := []int{1, 2, 3, 4, 5, 6, 7}
+
+	got := Chunk(list, 22)
+
+	assert.Equal(t, 1, len(got))
+	assert.Equal(t, [][]int{list}, got)
+}

@@ -101,10 +101,26 @@ func Reduce[T any](list []T, fn func(prev T, next T) T) ComposeFunc[T] {
 	}
 }
 
+// Reverse - return slice in reverse order
 func Reverse[T comparable](list []T) []T {
 
 	for i, j := 0, len(list)-1; i < j; i, j = i+1, j-1 {
 		list[i], list[j] = list[j], list[i]
 	}
 	return list
+}
+
+// Chunk - creates a new nested slice with slice elements chunked
+func Chunk[T any](list []T, chunkSize int) [][]T {
+	var result [][]T
+	if len(list) <= chunkSize {
+		result = append(result, list)
+		return result
+	}
+	for len(list) > chunkSize {
+		result = append(result, list[:chunkSize])
+		list = list[chunkSize:]
+	}
+	result = append(result, list)
+	return result
 }
