@@ -148,7 +148,7 @@ func Difference[T comparable](lists ...[]T) []T {
 		}
 	}
 	var result []T
-	for key, _ := range diff {
+	for key := range diff {
 		result = append(result, key)
 	}
 	return result
