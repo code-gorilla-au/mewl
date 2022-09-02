@@ -124,3 +124,32 @@ func Chunk[T any](list []T, chunkSize int) [][]T {
 	result = append(result, list)
 	return result
 }
+
+// Difference - Creates an array of array values not included in the other given arrays.
+func Difference[T comparable](lists ...[]T) []T {
+	exists := make(map[T]struct{}, 0)
+	diff := make(map[T]struct{}, 0)
+
+	for _, list := range lists {
+
+		for _, item := range list {
+
+			if _, ok := exists[item]; ok {
+				continue
+			}
+
+			if _, ok := diff[item]; ok {
+				exists[item] = struct{}{}
+				delete(diff, item)
+				continue
+			}
+
+			diff[item] = struct{}{}
+		}
+	}
+	var result []T
+	for key, _ := range diff {
+		result = append(result, key)
+	}
+	return result
+}

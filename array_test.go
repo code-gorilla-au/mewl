@@ -264,3 +264,11 @@ func TestChunk_less_than_chunk_size(t *testing.T) {
 	assert.Equal(t, 1, len(got))
 	assert.Equal(t, [][]int{list}, got)
 }
+
+func TestDifference(t *testing.T) {
+	list1 := []int{1, 2, 3}
+	list2 := []int{2, 3, 4}
+	got := Difference(list1, list2)
+
+	assert.Equal(t, []int{1, 4}, got)
+}
