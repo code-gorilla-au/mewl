@@ -11,6 +11,7 @@ import "github.com/code-gorilla-au/mewl"
 ## Index
 
 - [func Chunk[T any](list []T, chunkSize int) [][]T](<#func-chunk>)
+- [func Difference[T comparable](lists ...[]T) []T](<#func-difference>)
 - [func Every[T any](list []T, fn PredicateFunc[T]) bool](<#func-every>)
 - [func Filter[T any](list []T, fn PredicateFunc[T]) []T](<#func-filter>)
 - [func Find[T any](list []T, fn PredicateFunc[T]) (T, bool)](<#func-find>)
@@ -33,6 +34,14 @@ func Chunk[T any](list []T, chunkSize int) [][]T
 ```
 
 Chunk \- creates a new nested slice with slice elements chunked
+
+## func [Difference](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L129>)
+
+```go
+func Difference[T comparable](lists ...[]T) []T
+```
+
+Difference \- Creates an array of array values not included in the other given arrays.
 
 ## func [Every](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L81>)
 
