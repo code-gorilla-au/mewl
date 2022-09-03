@@ -20,6 +20,7 @@ import "github.com/code-gorilla-au/mewl"
 - [func Reverse[T comparable](list []T) []T](<#func-reverse>)
 - [func Union[T comparable](lists ...[]T) []T](<#func-union>)
 - [func Unique[T comparable](list []T) []T](<#func-unique>)
+- [func Without[T comparable](list []T, omit ...T) []T](<#func-without>)
 - [type ComposeFunc](<#type-composefunc>)
   - [func Pipe[T any](fns ...ComposeFunc[T]) ComposeFunc[T]](<#func-pipe>)
   - [func Reduce[T any](list []T, fn func(prev T, next T) T) ComposeFunc[T]](<#func-reduce>)
@@ -106,6 +107,14 @@ func Unique[T comparable](list []T) []T
 ```
 
 Unique \- return unique items from a provided list
+
+## func [Without](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L158>)
+
+```go
+func Without[T comparable](list []T, omit ...T) []T
+```
+
+Without \- Creates an array excluding all given values
 
 ## type [ComposeFunc](<https://github.com/code-gorilla-au/mewl/blob/main/types.go#L4>)
 

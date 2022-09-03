@@ -153,3 +153,18 @@ func Difference[T comparable](lists ...[]T) []T {
 	}
 	return result
 }
+
+// Without - Creates an array excluding all given values
+func Without[T comparable](list []T, omit ...T) []T {
+	var result []T
+	for _, item := range list {
+		for _, o := range omit {
+			if item == o {
+				continue
+			}
+
+			result = append(result, item)
+		}
+	}
+	return result
+}

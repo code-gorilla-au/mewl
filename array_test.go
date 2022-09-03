@@ -272,3 +272,47 @@ func TestDifference(t *testing.T) {
 
 	assert.Equal(t, []int{1, 4}, got)
 }
+
+func TestDifference_no_difference(t *testing.T) {
+	list1 := []int{1, 2, 3}
+	list2 := []int{1, 2, 3}
+	got := Difference(list1, list2)
+
+	assert.Nil(t, got)
+}
+
+func TestDifference_key_val(t *testing.T) {
+	list1 := []KeyVal{
+		{
+			Key:   "foo",
+			Value: "bar",
+		},
+		{
+			Key:   "bin",
+			Value: "baz",
+		},
+	}
+	list2 := []KeyVal{
+		{
+			Key:   "foo",
+			Value: "bar",
+		},
+	}
+	got := Difference(list1, list2)
+
+	assert.Equal(t, []KeyVal{{
+		Key:   "bin",
+		Value: "baz",
+	}}, got)
+}
+
+func TestWithout(t *testing.T) {
+	list := []KeyVal{
+		{Key: "foo", Value: "bar"},
+		{Key: "bin", Value: "baz"},
+	}
+
+	got := Without(list, KeyVal{Key: "bin", Value: "baz"})
+
+	assert.Equal(t, []KeyVal{{Key: "foo", Value: "bar"}}, got)
+}
