@@ -29,3 +29,14 @@ func TestPipe_int_product(t *testing.T) {
 	assert.Equal(t, 4, got)
 
 }
+
+func TestOnce(t *testing.T) {
+	invoker := Once(func(i int) int {
+		return i + 1
+	})
+
+	got := invoker(1)
+	assert.Equal(t, 2, got)
+	got = invoker(2)
+	assert.Equal(t, 2, got)
+}
