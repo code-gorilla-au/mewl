@@ -22,6 +22,7 @@ import "github.com/code-gorilla-au/mewl"
 - [func Unique[T comparable](list []T) []T](<#func-unique>)
 - [func Without[T comparable](list []T, omit ...T) []T](<#func-without>)
 - [type ComposeFunc](<#type-composefunc>)
+  - [func Once[T any](fn ComposeFunc[T]) ComposeFunc[T]](<#func-once>)
   - [func Pipe[T any](fns ...ComposeFunc[T]) ComposeFunc[T]](<#func-pipe>)
   - [func Reduce[T any](list []T, fn func(prev T, next T) T) ComposeFunc[T]](<#func-reduce>)
 - [type MapperFunc](<#type-mapperfunc>)
@@ -123,6 +124,14 @@ ComposeFunc \- function that receives an input and returns an input of the same 
 ```go
 type ComposeFunc[T any] func(T) T
 ```
+
+### func [Once](<https://github.com/code-gorilla-au/mewl/blob/main/functions.go#L16>)
+
+```go
+func Once[T any](fn ComposeFunc[T]) ComposeFunc[T]
+```
+
+Once \- Creates a function that is restricted to invoking func once. Repeat calls to the function return the value of the first invocation
 
 ### func [Pipe](<https://github.com/code-gorilla-au/mewl/blob/main/functions.go#L4>)
 
