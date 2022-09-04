@@ -13,7 +13,6 @@ func Pipe[T any](fns ...ComposeFunc[T]) ComposeFunc[T] {
 
 func Once[T any](fn ComposeFunc[T]) ComposeFunc[T] {
 	invoked := false
-
 	var result T
 
 	return func(t T) T {
