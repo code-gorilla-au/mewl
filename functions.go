@@ -11,6 +11,8 @@ func Pipe[T any](fns ...ComposeFunc[T]) ComposeFunc[T] {
 	}
 }
 
+// Once - Creates a function that is restricted to invoking func once.
+// Repeat calls to the function return the value of the first invocation
 func Once[T any](fn ComposeFunc[T]) ComposeFunc[T] {
 	invoked := false
 	var result T
