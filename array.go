@@ -168,3 +168,16 @@ func Without[T comparable](list []T, omit ...T) []T {
 	}
 	return result
 }
+
+// Some - Checks if predicate returns truthy for any element of a list.
+// Iteration is stopped once predicate returns truthy
+func Some[T any](list []T, fn PredicateFunc[T]) bool {
+	result := false
+
+	for _, item := range list {
+		if fn(item) {
+			return true
+		}
+	}
+	return result
+}

@@ -316,3 +316,12 @@ func TestWithout(t *testing.T) {
 
 	assert.Equal(t, []KeyVal{{Key: "foo", Value: "bar"}}, got)
 }
+
+func TestSome(t *testing.T) {
+	list := []int{1, 2, 3}
+
+	got := Some(list, func(i int) bool {
+		return i == 2
+	})
+	assert.Equal(t, true, got)
+}
