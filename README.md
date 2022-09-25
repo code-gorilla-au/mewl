@@ -18,7 +18,9 @@ import "github.com/code-gorilla-au/mewl"
 - [func ForEach[T comparable](list []T, fn func(input T))](<#func-foreach>)
 - [func Map[T comparable, K any](list []T, fn MapperFunc[T, K]) []K](<#func-map>)
 - [func MapKeys[T comparable, K any](obj map[T]K) []T](<#func-mapkeys>)
+- [func MapOmitBy[T comparable, K any](obj map[T]K, fn PredicateFunc[K]) map[T]K](<#func-mapomitby>)
 - [func MapOmitKeys[T comparable, K any](obj map[T]K, omits ...T) map[T]K](<#func-mapomitkeys>)
+- [func MapPickBy[T comparable, K any](obj map[T]K, fn PredicateFunc[K]) map[T]K](<#func-mappickby>)
 - [func MapPickKeys[T comparable, K any](obj map[T]K, picks ...T) map[T]K](<#func-mappickkeys>)
 - [func MapValues[T comparable, K any](obj map[T]K) []K](<#func-mapvalues>)
 - [func Reverse[T comparable](list []T) []T](<#func-reverse>)
@@ -100,6 +102,14 @@ func MapKeys[T comparable, K any](obj map[T]K) []T
 
 Keys \- return map's keys
 
+## func [MapOmitBy](<https://github.com/code-gorilla-au/mewl/blob/main/maps.go#L31>)
+
+```go
+func MapOmitBy[T comparable, K any](obj map[T]K, fn PredicateFunc[K]) map[T]K
+```
+
+MapOmitBy \- returns a partial copy of an object omitting values based on a predicate func.
+
 ## func [MapOmitKeys](<https://github.com/code-gorilla-au/mewl/blob/main/maps.go#L23>)
 
 ```go
@@ -108,7 +118,15 @@ func MapOmitKeys[T comparable, K any](obj map[T]K, omits ...T) map[T]K
 
 MapOmitKeys \- returns a partial copy of an object omitting the keys specified. If the key does not exist, the property is ignored.
 
-## func [MapPickKeys](<https://github.com/code-gorilla-au/mewl/blob/main/maps.go#L32>)
+## func [MapPickBy](<https://github.com/code-gorilla-au/mewl/blob/main/maps.go#L57>)
+
+```go
+func MapPickBy[T comparable, K any](obj map[T]K, fn PredicateFunc[K]) map[T]K
+```
+
+MapPickKeys\- Returns a partial copy of an object containing only the keys specified by a predicate func.
+
+## func [MapPickKeys](<https://github.com/code-gorilla-au/mewl/blob/main/maps.go#L44>)
 
 ```go
 func MapPickKeys[T comparable, K any](obj map[T]K, picks ...T) map[T]K

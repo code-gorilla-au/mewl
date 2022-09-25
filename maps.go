@@ -27,6 +27,18 @@ func MapOmitKeys[T comparable, K any](obj map[T]K, omits ...T) map[T]K {
 	return obj
 }
 
+// MapOmitBy - returns a partial copy of an object omitting values based on a predicate func.
+func MapOmitBy[T comparable, K any](obj map[T]K, fn PredicateFunc[K]) map[T]K {
+	result := make(map[T]K, 0)
+
+	for key, value := range obj {
+		if !fn(value) {
+			result[key] = value
+		}
+	}
+	return result
+}
+
 // MapPickKeys- Returns a partial copy of an object containing only the keys specified.
 // If the key does not exist, the property is ignored.
 func MapPickKeys[T comparable, K any](obj map[T]K, picks ...T) map[T]K {
@@ -38,5 +50,17 @@ func MapPickKeys[T comparable, K any](obj map[T]K, picks ...T) map[T]K {
 		}
 	}
 
+	return result
+}
+
+// MapPickKeys- Returns a partial copy of an object containing only the keys specified by a predicate func.
+func MapPickBy[T comparable, K any](obj map[T]K, fn PredicateFunc[K]) map[T]K {
+	result := make(map[T]K, 0)
+
+	for key, value := range obj {
+		if fn(value) {
+			result[key] = value
+		}
+	}
 	return result
 }

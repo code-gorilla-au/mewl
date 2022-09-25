@@ -62,3 +62,23 @@ func TestMapPickKey_no_keys(t *testing.T) {
 
 	assert.Equal(t, want, got)
 }
+
+func TestMapOmitBy(t *testing.T) {
+	want := map[int]int{1: 1}
+
+	got := MapOmitBy(map[int]int{1: 1, 2: 2}, func(item int) bool {
+		return item == 2
+	})
+
+	assert.Equal(t, want, got)
+}
+
+func TestMapPickBy(t *testing.T) {
+	want := map[int]int{1: 1}
+
+	got := MapPickBy(map[int]int{1: 1, 2: 2}, func(item int) bool {
+		return item == 1
+	})
+
+	assert.Equal(t, want, got)
+}
