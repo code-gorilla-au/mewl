@@ -26,3 +26,18 @@ func Once[T any](fn ComposeFunc[T]) ComposeFunc[T] {
 		return result
 	}
 }
+
+func Before[T any](count int, fn ComposeFunc[T]) ComposeFunc[T] {
+	invoked := 0
+	var result T
+
+	return func(t T) T {
+		invoked++
+		if invoked >= count {
+			return result
+
+		}
+		result = fn(t)
+		return result
+	}
+}

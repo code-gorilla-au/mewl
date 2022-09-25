@@ -40,3 +40,17 @@ func TestOnce(t *testing.T) {
 	got = invoker(2)
 	assert.Equal(t, 2, got)
 }
+
+func TestBefore(t *testing.T) {
+
+	invoker := Before(2, func(numb int) int {
+		return numb + 1
+	})
+
+	result := invoker(1)
+	assert.Equal(t, 2, result)
+	result = invoker(3)
+	assert.Equal(t, 2, result)
+	result = invoker(3)
+	assert.Equal(t, 2, result)
+}

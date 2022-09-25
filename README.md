@@ -27,6 +27,7 @@ import "github.com/code-gorilla-au/mewl"
 - [func Unique[T comparable](list []T) []T](<#func-unique>)
 - [func Without[T comparable](list []T, omit ...T) []T](<#func-without>)
 - [type ComposeFunc](<#type-composefunc>)
+  - [func Before[T any](count int, fn ComposeFunc[T]) ComposeFunc[T]](<#func-before>)
   - [func Once[T any](fn ComposeFunc[T]) ComposeFunc[T]](<#func-once>)
   - [func Pipe[T any](fns ...ComposeFunc[T]) ComposeFunc[T]](<#func-pipe>)
   - [func Reduce[T any](list []T, fn func(prev T, next T) T) ComposeFunc[T]](<#func-reduce>)
@@ -168,6 +169,12 @@ ComposeFunc \- function that receives an input and returns an input of the same 
 
 ```go
 type ComposeFunc[T any] func(T) T
+```
+
+### func [Before](<https://github.com/code-gorilla-au/mewl/blob/main/functions.go#L30>)
+
+```go
+func Before[T any](count int, fn ComposeFunc[T]) ComposeFunc[T]
 ```
 
 ### func [Once](<https://github.com/code-gorilla-au/mewl/blob/main/functions.go#L16>)
