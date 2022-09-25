@@ -17,7 +17,12 @@ import "github.com/code-gorilla-au/mewl"
 - [func Find[T any](list []T, fn PredicateFunc[T]) (T, bool)](<#func-find>)
 - [func ForEach[T comparable](list []T, fn func(input T))](<#func-foreach>)
 - [func Map[T comparable, K any](list []T, fn MapperFunc[T, K]) []K](<#func-map>)
+- [func MapKeys[T comparable, K any](obj map[T]K) []T](<#func-mapkeys>)
+- [func MapOmitKeys[T comparable, K any](obj map[T]K, omits ...T) map[T]K](<#func-mapomitkeys>)
+- [func MapPickKeys[T comparable, K any](obj map[T]K, picks ...T) map[T]K](<#func-mappickkeys>)
+- [func MapValues[T comparable, K any](obj map[T]K) []K](<#func-mapvalues>)
 - [func Reverse[T comparable](list []T) []T](<#func-reverse>)
+- [func Some[T any](list []T, fn PredicateFunc[T]) bool](<#func-some>)
 - [func Union[T comparable](lists ...[]T) []T](<#func-union>)
 - [func Unique[T comparable](list []T) []T](<#func-unique>)
 - [func Without[T comparable](list []T, omit ...T) []T](<#func-without>)
@@ -85,6 +90,38 @@ func Map[T comparable, K any](list []T, fn MapperFunc[T, K]) []K
 
 Map \- creates a new array populated with the results of calling a provided function on every element in the calling array.
 
+## func [MapKeys](<https://github.com/code-gorilla-au/mewl/blob/main/maps.go#L4>)
+
+```go
+func MapKeys[T comparable, K any](obj map[T]K) []T
+```
+
+Keys \- return map's keys
+
+## func [MapOmitKeys](<https://github.com/code-gorilla-au/mewl/blob/main/maps.go#L23>)
+
+```go
+func MapOmitKeys[T comparable, K any](obj map[T]K, omits ...T) map[T]K
+```
+
+MapOmitKeys \- returns a partial copy of an object omitting the keys specified. If the key does not exist, the property is ignored.
+
+## func [MapPickKeys](<https://github.com/code-gorilla-au/mewl/blob/main/maps.go#L32>)
+
+```go
+func MapPickKeys[T comparable, K any](obj map[T]K, picks ...T) map[T]K
+```
+
+MapPickKeys\- Returns a partial copy of an object containing only the keys specified. If the key does not exist, the property is ignored.
+
+## func [MapValues](<https://github.com/code-gorilla-au/mewl/blob/main/maps.go#L13>)
+
+```go
+func MapValues[T comparable, K any](obj map[T]K) []K
+```
+
+MapValues \- return map's values
+
 ## func [Reverse](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L105>)
 
 ```go
@@ -92,6 +129,14 @@ func Reverse[T comparable](list []T) []T
 ```
 
 Reverse \- return slice in reverse order
+
+## func [Some](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L174>)
+
+```go
+func Some[T any](list []T, fn PredicateFunc[T]) bool
+```
+
+Some \- Checks if predicate returns truthy for any element of a list. Iteration is stopped once predicate returns truthy
 
 ## func [Union](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L49>)
 
