@@ -26,8 +26,9 @@ import "github.com/code-gorilla-au/mewl"
 - [func Union[T comparable](lists ...[]T) []T](<#func-union>)
 - [func Unique[T comparable](list []T) []T](<#func-unique>)
 - [func Without[T comparable](list []T, omit ...T) []T](<#func-without>)
+- [type AnyFunc](<#type-anyfunc>)
+  - [func Before[T any](n int, fn AnyFunc[T]) AnyFunc[T]](<#func-before>)
 - [type ComposeFunc](<#type-composefunc>)
-  - [func Before[T any](count int, fn ComposeFunc[T]) ComposeFunc[T]](<#func-before>)
   - [func Once[T any](fn ComposeFunc[T]) ComposeFunc[T]](<#func-once>)
   - [func Pipe[T any](fns ...ComposeFunc[T]) ComposeFunc[T]](<#func-pipe>)
   - [func Reduce[T any](list []T, fn func(prev T, next T) T) ComposeFunc[T]](<#func-reduce>)
@@ -163,18 +164,28 @@ func Without[T comparable](list []T, omit ...T) []T
 
 Without \- Creates an array excluding all given values
 
+## type [AnyFunc](<https://github.com/code-gorilla-au/mewl/blob/main/types.go#L13>)
+
+AnyFunc \- function that receives n arguments
+
+```go
+type AnyFunc[T any] func(args ...T) T
+```
+
+### func [Before](<https://github.com/code-gorilla-au/mewl/blob/main/functions.go#L32>)
+
+```go
+func Before[T any](n int, fn AnyFunc[T]) AnyFunc[T]
+```
+
+Creates a function that invokes func while it's called less than n times. Subsequent calls to the created function return the result of the last func invocation.
+
 ## type [ComposeFunc](<https://github.com/code-gorilla-au/mewl/blob/main/types.go#L4>)
 
 ComposeFunc \- function that receives an input and returns an input of the same type.
 
 ```go
 type ComposeFunc[T any] func(T) T
-```
-
-### func [Before](<https://github.com/code-gorilla-au/mewl/blob/main/functions.go#L30>)
-
-```go
-func Before[T any](count int, fn ComposeFunc[T]) ComposeFunc[T]
 ```
 
 ### func [Once](<https://github.com/code-gorilla-au/mewl/blob/main/functions.go#L16>)

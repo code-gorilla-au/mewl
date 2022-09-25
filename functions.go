@@ -27,17 +27,19 @@ func Once[T any](fn ComposeFunc[T]) ComposeFunc[T] {
 	}
 }
 
-func Before[T any](count int, fn ComposeFunc[T]) ComposeFunc[T] {
+// Creates a function that invokes func while it's called less than n times.
+// Subsequent calls to the created function return the result of the last func invocation.
+func Before[T any](n int, fn AnyFunc[T]) AnyFunc[T] {
 	invoked := 0
 	var result T
 
-	return func(t T) T {
+	return func(args ...T) T {
 		invoked++
-		if invoked >= count {
+		if invoked >= n {
 			return result
 
 		}
-		result = fn(t)
+		result = fn(args...)
 		return result
 	}
 }

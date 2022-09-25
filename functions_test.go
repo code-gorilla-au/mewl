@@ -43,8 +43,8 @@ func TestOnce(t *testing.T) {
 
 func TestBefore(t *testing.T) {
 
-	invoker := Before(2, func(numb int) int {
-		return numb + 1
+	invoker := Before(2, func(args ...int) int {
+		return args[0] + 1
 	})
 
 	result := invoker(1)
