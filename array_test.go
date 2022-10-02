@@ -184,7 +184,7 @@ func ExampleUnique() {
 	got := Unique(list)
 
 	fmt.Println(got)
-	// Output: [{bin baz}]
+	// Output: [{foo bar} {bin baz}]
 }
 
 func TestFind_struct(t *testing.T) {
@@ -506,6 +506,9 @@ func ExampleWithout() {
 	}
 
 	got := Without(list, KeyVal{Key: "bin", Value: "baz"})
+
+	fmt.Println(got)
+	// Output: [{foo bar}]
 }
 
 func TestSome(t *testing.T) {

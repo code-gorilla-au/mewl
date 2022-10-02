@@ -46,6 +46,29 @@ func Chunk[T any](list []T, chunkSize int) [][]T
 
 Chunk \- creates a new nested slice with slice elements chunked
 
+<details><summary>Example</summary>
+<p>
+
+```go
+{
+	list := []int{1, 2, 3, 4, 5, 6}
+
+	got := Chunk(list, 2)
+
+	fmt.Println(got)
+
+}
+```
+
+#### Output
+
+```
+[[1 2] [3 4] [5 6]]
+```
+
+</p>
+</details>
+
 ## func [Difference](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L129>)
 
 ```go
@@ -54,6 +77,29 @@ func Difference[T comparable](lists ...[]T) []T
 
 Difference \- Creates an array of array values not included in the other given arrays.
 
+<details><summary>Example</summary>
+<p>
+
+```go
+{
+	list1 := []int{1, 2, 3}
+	list2 := []int{2, 3, 4}
+	got := Difference(list1, list2)
+
+	fmt.Println(got)
+
+}
+```
+
+#### Output
+
+```
+[1 4]
+```
+
+</p>
+</details>
+
 ## func [Every](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L81>)
 
 ```go
@@ -61,6 +107,39 @@ func Every[T any](list []T, fn PredicateFunc[T]) bool
 ```
 
 Every \- tests whether all elements in the array pass the test implemented by the provided function.
+
+<details><summary>Example</summary>
+<p>
+
+```go
+{
+	list := []KeyVal{
+		{
+			Key:   "foo",
+			Value: "bar",
+		},
+		{
+			Key:   "bin",
+			Value: "baz",
+		},
+	}
+	ok := Every(list, func(item KeyVal) bool {
+		return item.Value != ""
+	})
+
+	fmt.Println(ok)
+
+}
+```
+
+#### Output
+
+```
+true
+```
+
+</p>
+</details>
 
 ## func [Filter](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L4>)
 
@@ -110,6 +189,39 @@ func Find[T any](list []T, fn PredicateFunc[T]) (T, bool)
 ```
 
 Find \- returns the first element in the provided array that satisfies the provided testing function. If item is not found return nil value.
+
+<details><summary>Example</summary>
+<p>
+
+```go
+{
+	list := []KeyVal{
+		{
+			Key:   "foo",
+			Value: "bar",
+		},
+		{
+			Key:   "bin",
+			Value: "baz",
+		},
+	}
+
+	got, ok := Find(list, func(item KeyVal) bool {
+		return item.Value == "bar"
+	})
+	fmt.Println(got, ok)
+
+}
+```
+
+#### Output
+
+```
+{foo bar} true
+```
+
+</p>
+</details>
 
 ## func [ForEach](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L26>)
 
@@ -246,6 +358,29 @@ func Reverse[T comparable](list []T) []T
 
 Reverse \- return slice in reverse order
 
+<details><summary>Example</summary>
+<p>
+
+```go
+{
+	list := []int{1, 2, 3}
+
+	got := Reverse(list)
+
+	fmt.Println(got)
+
+}
+```
+
+#### Output
+
+```
+[3 2 1]
+```
+
+</p>
+</details>
+
 ## func [Some](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L174>)
 
 ```go
@@ -262,6 +397,44 @@ func Union[T comparable](lists ...[]T) []T
 
 Union \- merges two lists into a slice with no duplicates composed of the elements of each list.
 
+<details><summary>Example</summary>
+<p>
+
+```go
+{
+	id := "1"
+	value := "some value"
+	lists := [][]KeyVal{
+		{
+			{
+				Key:   id,
+				Value: value,
+			},
+		},
+		{
+			{
+				Key:   id,
+				Value: value,
+			},
+		},
+	}
+
+	got := Union(lists...)
+
+	fmt.Println(got)
+
+}
+```
+
+#### Output
+
+```
+[{1 some value}]
+```
+
+</p>
+</details>
+
 ## func [Unique](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L33>)
 
 ```go
@@ -270,6 +443,42 @@ func Unique[T comparable](list []T) []T
 
 Unique \- return unique items from a provided list
 
+<details><summary>Example</summary>
+<p>
+
+```go
+{
+	list := []KeyVal{
+		{
+			Key:   "foo",
+			Value: "bar",
+		},
+		{
+			Key:   "foo",
+			Value: "bar",
+		},
+		{
+			Key:   "bin",
+			Value: "baz",
+		},
+	}
+
+	got := Unique(list)
+
+	fmt.Println(got)
+
+}
+```
+
+#### Output
+
+```
+[{foo bar} {bin baz}]
+```
+
+</p>
+</details>
+
 ## func [Without](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L158>)
 
 ```go
@@ -277,6 +486,32 @@ func Without[T comparable](list []T, omit ...T) []T
 ```
 
 Without \- Creates an array excluding all given values
+
+<details><summary>Example</summary>
+<p>
+
+```go
+{
+	list := []KeyVal{
+		{Key: "foo", Value: "bar"},
+		{Key: "bin", Value: "baz"},
+	}
+
+	got := Without(list, KeyVal{Key: "bin", Value: "baz"})
+
+	fmt.Println(got)
+
+}
+```
+
+#### Output
+
+```
+[{foo bar}]
+```
+
+</p>
+</details>
 
 ## type [AnyFunc](<https://github.com/code-gorilla-au/mewl/blob/main/types.go#L13>)
 
@@ -325,6 +560,33 @@ func Reduce[T any](list []T, fn func(prev T, next T) T) ComposeFunc[T]
 ```
 
 Reduce \- executes a user\-supplied "reducer" callback function on each element of the array, in order, passing in the return value from the calculation on the preceding element. The final result of running the reducer across all elements of the array is a single value
+
+<details><summary>Example</summary>
+<p>
+
+```go
+{
+	list := []int{1, 2, 3}
+
+	add := Reduce(list, func(prev, current int) int {
+		return prev + current
+	})
+
+	got := add(1)
+
+	fmt.Println(got)
+
+}
+```
+
+#### Output
+
+```
+7
+```
+
+</p>
+</details>
 
 ## type [MapperFunc](<https://github.com/code-gorilla-au/mewl/blob/main/types.go#L10>)
 
