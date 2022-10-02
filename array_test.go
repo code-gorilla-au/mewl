@@ -1,6 +1,7 @@
 package mewl
 
 import (
+	"fmt"
 	"testing"
 	"time"
 
@@ -45,6 +46,25 @@ func TestFilter_struct(t *testing.T) {
 	}
 }
 
+func ExampleFilter() {
+	list := []KeyVal{
+		{
+			Key:   "foo",
+			Value: "bar",
+		},
+		{
+			Key:   "bin",
+			Value: "baz",
+		},
+	}
+
+	got := Filter(list, func(item KeyVal) bool {
+		return item.Key == "foo"
+	})
+	fmt.Println(got)
+	// Output: [{foo bar}]
+}
+
 func TestMap_struct(t *testing.T) {
 	list := []KeyVal{
 		{
@@ -69,6 +89,28 @@ func TestMap_struct(t *testing.T) {
 	}
 }
 
+func ExampleMap() {
+	list := []KeyVal{
+		{
+			Key:   "foo",
+			Value: "bar",
+		},
+		{
+			Key:   "bin",
+			Value: "baz",
+		},
+	}
+
+	got := Map(list, func(item KeyVal) Val {
+		return Val{
+			Value: item.Value,
+		}
+	})
+
+	fmt.Println(got)
+	// Output: [{bar} {baz}]
+}
+
 func TestForEach_struct(t *testing.T) {
 	list := []int{1, 1, 2}
 
@@ -80,6 +122,19 @@ func TestForEach_struct(t *testing.T) {
 	if total != 4 {
 		t.Fatal("expected 4, got ", total)
 	}
+}
+
+func ExampleForEach() {
+	list := []int{1, 1, 2}
+
+	total := 0
+
+	ForEach(list, func(item int) {
+		total += item
+	})
+
+	fmt.Println(total)
+	// Output: 4
 }
 
 func TestUnique_struct(t *testing.T) {
@@ -110,6 +165,28 @@ func TestUnique_struct(t *testing.T) {
 	}
 }
 
+func ExampleUnique() {
+	list := []KeyVal{
+		{
+			Key:   "foo",
+			Value: "bar",
+		},
+		{
+			Key:   "foo",
+			Value: "bar",
+		},
+		{
+			Key:   "bin",
+			Value: "baz",
+		},
+	}
+
+	got := Unique(list)
+
+	fmt.Println(got)
+	// Output: [{bin baz}]
+}
+
 func TestFind_struct(t *testing.T) {
 	list := []KeyVal{
 		{
@@ -131,6 +208,25 @@ func TestFind_struct(t *testing.T) {
 	if got != list[0] {
 		t.Fatal("expected first element, got ", got)
 	}
+}
+
+func ExampleFind() {
+	list := []KeyVal{
+		{
+			Key:   "foo",
+			Value: "bar",
+		},
+		{
+			Key:   "bin",
+			Value: "baz",
+		},
+	}
+
+	got, ok := Find(list, func(item KeyVal) bool {
+		return item.Value == "bar"
+	})
+	fmt.Println(got, ok)
+	// Output: {foo bar} true
 }
 
 func TestFind_struct_not_found(t *testing.T) {
@@ -174,6 +270,25 @@ func TestEvery_struct(t *testing.T) {
 	}
 }
 
+func ExampleEvery() {
+	list := []KeyVal{
+		{
+			Key:   "foo",
+			Value: "bar",
+		},
+		{
+			Key:   "bin",
+			Value: "baz",
+		},
+	}
+	ok := Every(list, func(item KeyVal) bool {
+		return item.Value != ""
+	})
+
+	fmt.Println(ok)
+	// Output: true
+}
+
 func TestEvery_struct_no_match(t *testing.T) {
 	list := []KeyVal{
 		{
@@ -204,6 +319,19 @@ func TestReduce_int(t *testing.T) {
 	assert.Equal(t, 7, got)
 }
 
+func ExampleReduce() {
+	list := []int{1, 2, 3}
+
+	add := Reduce(list, func(prev, current int) int {
+		return prev + current
+	})
+
+	got := add(1)
+
+	fmt.Println(got)
+	// Output: 7
+}
+
 func TestUnion(t *testing.T) {
 	id := uuid.New()
 	now := time.Now()
@@ -213,6 +341,8 @@ func TestUnion(t *testing.T) {
 				id:   id,
 				date: now,
 			},
+		},
+		{
 			{
 				id:   id,
 				date: now,
@@ -223,6 +353,31 @@ func TestUnion(t *testing.T) {
 	got := Union(lists...)
 
 	assert.Equal(t, 1, len(got))
+	assert.Equal(t, []CmpUUID{{id: id, date: now}}, got)
+}
+
+func ExampleUnion() {
+	id := "1"
+	value := "some value"
+	lists := [][]KeyVal{
+		{
+			{
+				Key:   id,
+				Value: value,
+			},
+		},
+		{
+			{
+				Key:   id,
+				Value: value,
+			},
+		},
+	}
+
+	got := Union(lists...)
+
+	fmt.Println(got)
+	// Output: [{1 some value}]
 }
 
 func TestReverse(t *testing.T) {
@@ -231,6 +386,15 @@ func TestReverse(t *testing.T) {
 	got := Reverse(list)
 
 	assert.Equal(t, []int{3, 2, 1}, got)
+}
+
+func ExampleReverse() {
+	list := []int{1, 2, 3}
+
+	got := Reverse(list)
+
+	fmt.Println(got)
+	// Output: [3 2 1]
 }
 
 func TestChunk_even_allocation(t *testing.T) {
@@ -242,6 +406,15 @@ func TestChunk_even_allocation(t *testing.T) {
 	assert.Equal(t, []int{1, 2}, got[0])
 	assert.Equal(t, []int{3, 4}, got[1])
 	assert.Equal(t, []int{5, 6}, got[2])
+}
+
+func ExampleChunk() {
+	list := []int{1, 2, 3, 4, 5, 6}
+
+	got := Chunk(list, 2)
+
+	fmt.Println(got)
+	// Output: [[1 2] [3 4] [5 6]]
 }
 
 func TestChunk_odd_allocation(t *testing.T) {
@@ -271,6 +444,15 @@ func TestDifference(t *testing.T) {
 	got := Difference(list1, list2)
 
 	assert.Equal(t, []int{1, 4}, got)
+}
+
+func ExampleDifference() {
+	list1 := []int{1, 2, 3}
+	list2 := []int{2, 3, 4}
+	got := Difference(list1, list2)
+
+	fmt.Println(got)
+	// Output: [1 4]
 }
 
 func TestDifference_no_difference(t *testing.T) {
@@ -315,6 +497,15 @@ func TestWithout(t *testing.T) {
 	got := Without(list, KeyVal{Key: "bin", Value: "baz"})
 
 	assert.Equal(t, []KeyVal{{Key: "foo", Value: "bar"}}, got)
+}
+
+func ExampleWithout() {
+	list := []KeyVal{
+		{Key: "foo", Value: "bar"},
+		{Key: "bin", Value: "baz"},
+	}
+
+	got := Without(list, KeyVal{Key: "bin", Value: "baz"})
 }
 
 func TestSome(t *testing.T) {

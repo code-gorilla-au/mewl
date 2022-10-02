@@ -70,6 +70,39 @@ func Filter[T any](list []T, fn PredicateFunc[T]) []T
 
 Filter \- return a new list of elements that return true on the predicate func.
 
+<details><summary>Example</summary>
+<p>
+
+```go
+{
+	list := []KeyVal{
+		{
+			Key:   "foo",
+			Value: "bar",
+		},
+		{
+			Key:   "bin",
+			Value: "baz",
+		},
+	}
+
+	got := Filter(list, func(item KeyVal) bool {
+		return item.Key == "foo"
+	})
+	fmt.Println(got)
+
+}
+```
+
+#### Output
+
+```
+[{foo bar}]
+```
+
+</p>
+</details>
+
 ## func [Find](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L69>)
 
 ```go
@@ -86,6 +119,33 @@ func ForEach[T comparable](list []T, fn func(input T))
 
 ForEach \- iterates over the list and invokes the function on the element.
 
+<details><summary>Example</summary>
+<p>
+
+```go
+{
+	list := []int{1, 1, 2}
+
+	total := 0
+
+	ForEach(list, func(item int) {
+		total += item
+	})
+
+	fmt.Println(total)
+
+}
+```
+
+#### Output
+
+```
+4
+```
+
+</p>
+</details>
+
 ## func [Map](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L16>)
 
 ```go
@@ -93,6 +153,42 @@ func Map[T comparable, K any](list []T, fn MapperFunc[T, K]) []K
 ```
 
 Map \- creates a new array populated with the results of calling a provided function on every element in the calling array.
+
+<details><summary>Example</summary>
+<p>
+
+```go
+{
+	list := []KeyVal{
+		{
+			Key:   "foo",
+			Value: "bar",
+		},
+		{
+			Key:   "bin",
+			Value: "baz",
+		},
+	}
+
+	got := Map(list, func(item KeyVal) Val {
+		return Val{
+			Value: item.Value,
+		}
+	})
+
+	fmt.Println(got)
+
+}
+```
+
+#### Output
+
+```
+[{bar} {baz}]
+```
+
+</p>
+</details>
 
 ## func [MapKeys](<https://github.com/code-gorilla-au/mewl/blob/main/maps.go#L4>)
 
