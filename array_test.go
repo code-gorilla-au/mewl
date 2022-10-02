@@ -519,3 +519,14 @@ func TestSome(t *testing.T) {
 	})
 	assert.Equal(t, true, got)
 }
+
+func ExampleSome() {
+	list := []int{1, 2, 3}
+
+	got := Some(list, func(i int) bool {
+		return i == 2
+	})
+
+	fmt.Println(got)
+	// Output: true
+}

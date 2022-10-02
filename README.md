@@ -389,6 +389,31 @@ func Some[T any](list []T, fn PredicateFunc[T]) bool
 
 Some \- Checks if predicate returns truthy for any element of a list. Iteration is stopped once predicate returns truthy
 
+<details><summary>Example</summary>
+<p>
+
+```go
+{
+	list := []int{1, 2, 3}
+
+	got := Some(list, func(i int) bool {
+		return i == 2
+	})
+
+	fmt.Println(got)
+
+}
+```
+
+#### Output
+
+```
+true
+```
+
+</p>
+</details>
+
 ## func [Union](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L49>)
 
 ```go
