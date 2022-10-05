@@ -16,7 +16,6 @@ func TestMapKeys(t *testing.T) {
 	ForEach(want, func(item string) {
 		assert.Contains(t, got, item)
 	})
-	assert.Equal(t, want, got)
 }
 
 func ExampleMapKeys() {
@@ -89,6 +88,19 @@ func TestMapPickKey(t *testing.T) {
 	assert.Equal(t, want, got)
 }
 
+func ExampleMapPickKeys() {
+	obj := map[int]string{
+		1: "hello",
+		2: "world",
+		3: "bin",
+	}
+
+	got := MapPickKeys(obj, 1)
+
+	fmt.Println(got)
+	// Output: map[1:hello]
+}
+
 func TestMapPickKey_missing_keys(t *testing.T) {
 	want := map[int]int{2: 2}
 
@@ -115,6 +127,19 @@ func TestMapOmitBy(t *testing.T) {
 	assert.Equal(t, want, got)
 }
 
+func ExampleMapOmitBy() {
+	obj := map[string]int{
+		"hello": 1,
+		"world": 2,
+	}
+	got := MapOmitBy(obj, func(item int) bool {
+		return item == 1
+	})
+
+	fmt.Println(got)
+	// Output: map[world:2]
+}
+
 func TestMapPickBy(t *testing.T) {
 	want := map[int]int{1: 1}
 
@@ -123,4 +148,17 @@ func TestMapPickBy(t *testing.T) {
 	})
 
 	assert.Equal(t, want, got)
+}
+
+func ExampleMapPickBy() {
+	obj := map[string]int{
+		"hello": 1,
+		"world": 2,
+	}
+	got := MapPickBy(obj, func(item int) bool {
+		return item == 1
+	})
+
+	fmt.Println(got)
+	// Output: map[hello:1]
 }

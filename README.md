@@ -345,6 +345,33 @@ func MapOmitBy[T comparable, K any](obj map[T]K, fn PredicateFunc[K]) map[T]K
 
 MapOmitBy \- returns a partial copy of an object omitting values based on a predicate func.
 
+<details><summary>Example</summary>
+<p>
+
+```go
+{
+	obj := map[string]int{
+		"hello": 1,
+		"world": 2,
+	}
+	got := MapOmitBy(obj, func(item int) bool {
+		return item == 1
+	})
+
+	fmt.Println(got)
+
+}
+```
+
+#### Output
+
+```
+map[world:2]
+```
+
+</p>
+</details>
+
 ## func [MapOmitKeys](<https://github.com/code-gorilla-au/mewl/blob/main/maps.go#L23>)
 
 ```go
@@ -388,6 +415,33 @@ func MapPickBy[T comparable, K any](obj map[T]K, fn PredicateFunc[K]) map[T]K
 
 MapPickKeys\- Returns a partial copy of an object containing only the keys specified by a predicate func.
 
+<details><summary>Example</summary>
+<p>
+
+```go
+{
+	obj := map[string]int{
+		"hello": 1,
+		"world": 2,
+	}
+	got := MapPickBy(obj, func(item int) bool {
+		return item == 1
+	})
+
+	fmt.Println(got)
+
+}
+```
+
+#### Output
+
+```
+map[hello:1]
+```
+
+</p>
+</details>
+
 ## func [MapPickKeys](<https://github.com/code-gorilla-au/mewl/blob/main/maps.go#L44>)
 
 ```go
@@ -395,6 +449,33 @@ func MapPickKeys[T comparable, K any](obj map[T]K, picks ...T) map[T]K
 ```
 
 MapPickKeys\- Returns a partial copy of an object containing only the keys specified. If the key does not exist, the property is ignored.
+
+<details><summary>Example</summary>
+<p>
+
+```go
+{
+	obj := map[int]string{
+		1: "hello",
+		2: "world",
+		3: "bin",
+	}
+
+	got := MapPickKeys(obj, 1)
+
+	fmt.Println(got)
+
+}
+```
+
+#### Output
+
+```
+map[1:hello]
+```
+
+</p>
+</details>
 
 ## func [MapValues](<https://github.com/code-gorilla-au/mewl/blob/main/maps.go#L13>)
 
