@@ -310,6 +310,33 @@ func MapKeys[T comparable, K any](obj map[T]K) []T
 
 Keys \- return map's keys
 
+<details><summary>Example</summary>
+<p>
+
+```go
+{
+	obj := map[int]string{
+		1: "1",
+		2: "flash",
+	}
+
+	got := MapKeys(obj)
+	sort.Ints(got)
+
+	fmt.Println(got)
+
+}
+```
+
+#### Output
+
+```
+[1 2]
+```
+
+</p>
+</details>
+
 ## func [MapOmitBy](<https://github.com/code-gorilla-au/mewl/blob/main/maps.go#L31>)
 
 ```go
@@ -325,6 +352,33 @@ func MapOmitKeys[T comparable, K any](obj map[T]K, omits ...T) map[T]K
 ```
 
 MapOmitKeys \- returns a partial copy of an object omitting the keys specified. If the key does not exist, the property is ignored.
+
+<details><summary>Example</summary>
+<p>
+
+```go
+{
+	obj := map[string]int{
+		"hello": 1,
+		"world": 2,
+		"bin":   3,
+	}
+
+	got := MapOmitKeys(obj, "hello", "world")
+
+	fmt.Println(got)
+
+}
+```
+
+#### Output
+
+```
+map[bin:3]
+```
+
+</p>
+</details>
 
 ## func [MapPickBy](<https://github.com/code-gorilla-au/mewl/blob/main/maps.go#L57>)
 
@@ -349,6 +403,33 @@ func MapValues[T comparable, K any](obj map[T]K) []K
 ```
 
 MapValues \- return map's values
+
+<details><summary>Example</summary>
+<p>
+
+```go
+{
+	obj := map[int]string{
+		1: "hello",
+		2: "world",
+	}
+
+	got := MapValues(obj)
+	sort.Strings(got)
+
+	fmt.Println(got)
+
+}
+```
+
+#### Output
+
+```
+[hello world]
+```
+
+</p>
+</details>
 
 ## func [Reverse](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L105>)
 
