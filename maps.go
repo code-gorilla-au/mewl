@@ -1,5 +1,16 @@
 package mewl
 
+import "slices"
+
+// MapClone clones provided map
+func MapClone[T comparable, K any](obj map[T]K) map[T]K {
+	result := make(map[T]K, 0)
+	for key, value := range obj {
+		result[key] = value
+	}
+	return result
+}
+
 // Keys - return map's keys
 func MapKeys[T comparable, K any](obj map[T]K) []T {
 	var result []T
@@ -21,10 +32,16 @@ func MapValues[T comparable, K any](obj map[T]K) []K {
 // MapOmitKeys - returns a partial copy of an object omitting the keys specified.
 // If the key does not exist, the property is ignored.
 func MapOmitKeys[T comparable, K any](obj map[T]K, omits ...T) map[T]K {
-	for _, omit := range omits {
-		delete(obj, omit)
+	result := map[T]K{}
+
+	for key, value := range obj {
+		if slices.Contains(omits, key) {
+			continue
+		}
+
+		result[key] = value
 	}
-	return obj
+	return result
 }
 
 // MapOmitBy - returns a partial copy of an object omitting values based on a predicate func.

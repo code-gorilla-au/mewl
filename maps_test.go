@@ -163,3 +163,38 @@ func ExampleMapPickBy() {
 	fmt.Println(got)
 	// Output: map[hello:1]
 }
+
+func TestMapClone(t *testing.T) {
+	group := odize.NewGroup(t, nil)
+
+	err := group.
+		Test("should clone map of strings", func(t *testing.T) {
+			testVal := map[string]string{
+				"hello": "world",
+			}
+
+			result := MapClone(testVal)
+			odize.AssertEqual(t, testVal, result)
+		}).
+		Test("should clone empty map", func(t *testing.T) {
+			testVal := map[string]string{}
+
+			result := MapClone(testVal)
+			odize.AssertEqual(t, testVal, result)
+		}).
+		Run()
+
+	odize.AssertNoError(t, err)
+
+}
+
+func ExampleMapClone() {
+	obj := map[string]int{
+		"hello": 1,
+		"world": 2,
+	}
+	got := MapClone(obj)
+
+	fmt.Println(got)
+	// Output: map[hello:1 world:2]
+}
