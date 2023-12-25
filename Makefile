@@ -2,20 +2,32 @@
 
 .DEFAULT_GOAL := help
 
+PROJECT_ROOT:=$(shell git rev-parse --show-toplevel)
 COMMIT := $(shell git rev-parse --short HEAD)
 BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
 REPO := $(shell basename `git rev-parse --show-toplevel`)
 DATE := $(shell date +%Y-%m-%d-%H-%M-%S)
+APP_NAME := $(shell basename `git rev-parse --show-toplevel`)
 
-test: ## Run unit tests
+MAKE_LIB:=$(PROJECT_ROOT)/scripts
+-include $(MAKE_LIB)/lints.mk
+-include $(MAKE_LIB)/tools.mk
+
+test: lint scan ## Run unit tests
 	go test --short -cover -failfast ./...
 
 scan: ## run security scan
 	gosec ./...
-	go vet ./...
+	govulncheck ./...
 
-docgen: scan test ## generate go doc and append to readme.
+lint: ## run linter
+	go vet ./...
+	golangci-lint run ./...
+
+docgen: test ## generate go doc and append to readme.
 	gomarkdoc -o README.md -e .
+
+install: get-tools ## install tools + dependencies
 
 # HELP
 # This will output the help for each task
