@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/code-gorilla-au/odize"
 	"github.com/google/uuid"
-	"github.com/stretchr/testify/assert"
 )
 
 type CmpUUID struct {
@@ -316,7 +316,7 @@ func TestReduce_int(t *testing.T) {
 
 	got := add(1)
 
-	assert.Equal(t, 7, got)
+	odize.AssertEqual(t, 7, got)
 }
 
 func ExampleReduce() {
@@ -352,8 +352,8 @@ func TestUnion(t *testing.T) {
 
 	got := Union(lists...)
 
-	assert.Equal(t, 1, len(got))
-	assert.Equal(t, []CmpUUID{{id: id, date: now}}, got)
+	odize.AssertEqual(t, 1, len(got))
+	odize.AssertEqual(t, []CmpUUID{{id: id, date: now}}, got)
 }
 
 func ExampleUnion() {
@@ -385,7 +385,7 @@ func TestReverse(t *testing.T) {
 
 	got := Reverse(list)
 
-	assert.Equal(t, []int{3, 2, 1}, got)
+	odize.AssertEqual(t, []int{3, 2, 1}, got)
 }
 
 func ExampleReverse() {
@@ -402,10 +402,10 @@ func TestChunk_even_allocation(t *testing.T) {
 
 	got := Chunk(list, 2)
 
-	assert.Equal(t, 3, len(got))
-	assert.Equal(t, []int{1, 2}, got[0])
-	assert.Equal(t, []int{3, 4}, got[1])
-	assert.Equal(t, []int{5, 6}, got[2])
+	odize.AssertEqual(t, 3, len(got))
+	odize.AssertEqual(t, []int{1, 2}, got[0])
+	odize.AssertEqual(t, []int{3, 4}, got[1])
+	odize.AssertEqual(t, []int{5, 6}, got[2])
 }
 
 func ExampleChunk() {
@@ -422,11 +422,11 @@ func TestChunk_odd_allocation(t *testing.T) {
 
 	got := Chunk(list, 2)
 
-	assert.Equal(t, 4, len(got))
-	assert.Equal(t, []int{1, 2}, got[0])
-	assert.Equal(t, []int{3, 4}, got[1])
-	assert.Equal(t, []int{5, 6}, got[2])
-	assert.Equal(t, []int{7}, got[3])
+	odize.AssertEqual(t, 4, len(got))
+	odize.AssertEqual(t, []int{1, 2}, got[0])
+	odize.AssertEqual(t, []int{3, 4}, got[1])
+	odize.AssertEqual(t, []int{5, 6}, got[2])
+	odize.AssertEqual(t, []int{7}, got[3])
 }
 
 func TestChunk_less_than_chunk_size(t *testing.T) {
@@ -434,8 +434,8 @@ func TestChunk_less_than_chunk_size(t *testing.T) {
 
 	got := Chunk(list, 22)
 
-	assert.Equal(t, 1, len(got))
-	assert.Equal(t, [][]int{list}, got)
+	odize.AssertEqual(t, 1, len(got))
+	odize.AssertEqual(t, [][]int{list}, got)
 }
 
 func TestDifference(t *testing.T) {
@@ -443,7 +443,7 @@ func TestDifference(t *testing.T) {
 	list2 := []int{2, 3, 4}
 	got := Difference(list1, list2)
 
-	assert.Equal(t, []int{1, 4}, got)
+	odize.AssertEqual(t, []int{1, 4}, got)
 }
 
 func ExampleDifference() {
@@ -459,8 +459,10 @@ func TestDifference_no_difference(t *testing.T) {
 	list1 := []int{1, 2, 3}
 	list2 := []int{1, 2, 3}
 	got := Difference(list1, list2)
+	var expected []int
 
-	assert.Nil(t, got)
+	odize.AssertEqual(t, expected, got)
+
 }
 
 func TestDifference_key_val(t *testing.T) {
@@ -482,7 +484,7 @@ func TestDifference_key_val(t *testing.T) {
 	}
 	got := Difference(list1, list2)
 
-	assert.Equal(t, []KeyVal{{
+	odize.AssertEqual(t, []KeyVal{{
 		Key:   "bin",
 		Value: "baz",
 	}}, got)
@@ -496,7 +498,7 @@ func TestWithout(t *testing.T) {
 
 	got := Without(list, KeyVal{Key: "bin", Value: "baz"})
 
-	assert.Equal(t, []KeyVal{{Key: "foo", Value: "bar"}}, got)
+	odize.AssertEqual(t, []KeyVal{{Key: "foo", Value: "bar"}}, got)
 }
 
 func ExampleWithout() {
@@ -517,7 +519,7 @@ func TestSome(t *testing.T) {
 	got := Some(list, func(i int) bool {
 		return i == 2
 	})
-	assert.Equal(t, true, got)
+	odize.AssertEqual(t, true, got)
 }
 
 func ExampleSome() {

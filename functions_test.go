@@ -3,7 +3,7 @@ package mewl
 import (
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	"github.com/code-gorilla-au/odize"
 )
 
 func TestPipe_int(t *testing.T) {
@@ -13,7 +13,7 @@ func TestPipe_int(t *testing.T) {
 		},
 	)
 	got := add(1)
-	assert.Equal(t, 2, got)
+	odize.AssertEqual(t, 2, got)
 
 }
 func TestPipe_int_product(t *testing.T) {
@@ -26,7 +26,7 @@ func TestPipe_int_product(t *testing.T) {
 		},
 	)
 	got := add(1)
-	assert.Equal(t, 4, got)
+	odize.AssertEqual(t, 4, got)
 
 }
 
@@ -36,9 +36,9 @@ func TestOnce(t *testing.T) {
 	})
 
 	got := invoker(1)
-	assert.Equal(t, 2, got)
+	odize.AssertEqual(t, 2, got)
 	got = invoker(2)
-	assert.Equal(t, 2, got)
+	odize.AssertEqual(t, 2, got)
 }
 
 func TestBefore(t *testing.T) {
@@ -48,9 +48,9 @@ func TestBefore(t *testing.T) {
 	})
 
 	result := invoker(1)
-	assert.Equal(t, 2, result)
+	odize.AssertEqual(t, 2, result)
 	result = invoker(3)
-	assert.Equal(t, 2, result)
+	odize.AssertEqual(t, 2, result)
 	result = invoker(3)
-	assert.Equal(t, 2, result)
+	odize.AssertEqual(t, 2, result)
 }

@@ -2,10 +2,11 @@ package mewl
 
 import (
 	"fmt"
+	"slices"
 	"sort"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	"github.com/code-gorilla-au/odize"
 )
 
 func TestMapKeys(t *testing.T) {
@@ -14,7 +15,7 @@ func TestMapKeys(t *testing.T) {
 	got := MapKeys(map[string]int{"1": 1, "2": 2})
 
 	ForEach(want, func(item string) {
-		assert.Contains(t, got, item)
+		odize.AssertTrue(t, slices.Contains(got, item))
 	})
 }
 
@@ -37,7 +38,7 @@ func TestMapValues(t *testing.T) {
 	got := MapValues(map[string]int{"1": 1, "2": 2, "3": 3})
 
 	ForEach(want, func(item int) {
-		assert.Contains(t, got, item)
+		odize.AssertTrue(t, slices.Contains(got, item))
 	})
 }
 
@@ -57,7 +58,7 @@ func ExampleMapValues() {
 func TestMapOmitKey(t *testing.T) {
 	got := MapOmitKeys(map[string]int{"1": 1, "2": 2}, "2")
 
-	assert.Equal(t, map[string]int{"1": 1}, got)
+	odize.AssertEqual(t, map[string]int{"1": 1}, got)
 }
 
 func ExampleMapOmitKeys() {
@@ -77,7 +78,7 @@ func ExampleMapOmitKeys() {
 func TestMapOmitKey_missing_key_returns_whole_object(t *testing.T) {
 	got := MapOmitKeys(map[string]int{"1": 1, "2": 2}, "9")
 
-	assert.Equal(t, map[string]int{"1": 1, "2": 2}, got)
+	odize.AssertEqual(t, map[string]int{"1": 1, "2": 2}, got)
 }
 
 func TestMapPickKey(t *testing.T) {
@@ -85,7 +86,7 @@ func TestMapPickKey(t *testing.T) {
 
 	got := MapPickKeys(map[int]int{1: 1, 2: 2, 3: 3}, 1, 2)
 
-	assert.Equal(t, want, got)
+	odize.AssertEqual(t, want, got)
 }
 
 func ExampleMapPickKeys() {
@@ -106,7 +107,7 @@ func TestMapPickKey_missing_keys(t *testing.T) {
 
 	got := MapPickKeys(map[int]int{1: 1, 2: 2, 3: 3}, 99, 2)
 
-	assert.Equal(t, want, got)
+	odize.AssertEqual(t, want, got)
 }
 
 func TestMapPickKey_no_keys(t *testing.T) {
@@ -114,7 +115,7 @@ func TestMapPickKey_no_keys(t *testing.T) {
 
 	got := MapPickKeys(map[int]int{1: 1, 2: 2, 3: 3})
 
-	assert.Equal(t, want, got)
+	odize.AssertEqual(t, want, got)
 }
 
 func TestMapOmitBy(t *testing.T) {
@@ -124,7 +125,7 @@ func TestMapOmitBy(t *testing.T) {
 		return item == 2
 	})
 
-	assert.Equal(t, want, got)
+	odize.AssertEqual(t, want, got)
 }
 
 func ExampleMapOmitBy() {
@@ -147,7 +148,7 @@ func TestMapPickBy(t *testing.T) {
 		return item == 1
 	})
 
-	assert.Equal(t, want, got)
+	odize.AssertEqual(t, want, got)
 }
 
 func ExampleMapPickBy() {
