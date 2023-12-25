@@ -10,35 +10,36 @@ import "github.com/code-gorilla-au/mewl"
 
 ## Index
 
-- [func Chunk[T any](list []T, chunkSize int) [][]T](<#func-chunk>)
-- [func Difference[T comparable](lists ...[]T) []T](<#func-difference>)
-- [func Every[T any](list []T, fn PredicateFunc[T]) bool](<#func-every>)
-- [func Filter[T any](list []T, fn PredicateFunc[T]) []T](<#func-filter>)
-- [func Find[T any](list []T, fn PredicateFunc[T]) (T, bool)](<#func-find>)
-- [func ForEach[T comparable](list []T, fn func(input T))](<#func-foreach>)
-- [func Map[T comparable, K any](list []T, fn MapperFunc[T, K]) []K](<#func-map>)
-- [func MapKeys[T comparable, K any](obj map[T]K) []T](<#func-mapkeys>)
-- [func MapOmitBy[T comparable, K any](obj map[T]K, fn PredicateFunc[K]) map[T]K](<#func-mapomitby>)
-- [func MapOmitKeys[T comparable, K any](obj map[T]K, omits ...T) map[T]K](<#func-mapomitkeys>)
-- [func MapPickBy[T comparable, K any](obj map[T]K, fn PredicateFunc[K]) map[T]K](<#func-mappickby>)
-- [func MapPickKeys[T comparable, K any](obj map[T]K, picks ...T) map[T]K](<#func-mappickkeys>)
-- [func MapValues[T comparable, K any](obj map[T]K) []K](<#func-mapvalues>)
-- [func Reverse[T comparable](list []T) []T](<#func-reverse>)
-- [func Some[T any](list []T, fn PredicateFunc[T]) bool](<#func-some>)
-- [func Union[T comparable](lists ...[]T) []T](<#func-union>)
-- [func Unique[T comparable](list []T) []T](<#func-unique>)
-- [func Without[T comparable](list []T, omit ...T) []T](<#func-without>)
-- [type AnyFunc](<#type-anyfunc>)
-  - [func Before[T any](n int, fn AnyFunc[T]) AnyFunc[T]](<#func-before>)
-- [type ComposeFunc](<#type-composefunc>)
-  - [func Once[T any](fn ComposeFunc[T]) ComposeFunc[T]](<#func-once>)
-  - [func Pipe[T any](fns ...ComposeFunc[T]) ComposeFunc[T]](<#func-pipe>)
-  - [func Reduce[T any](list []T, fn func(prev T, next T) T) ComposeFunc[T]](<#func-reduce>)
-- [type MapperFunc](<#type-mapperfunc>)
-- [type PredicateFunc](<#type-predicatefunc>)
+- [func Chunk\[T any\]\(list \[\]T, chunkSize int\) \[\]\[\]T](<#Chunk>)
+- [func Difference\[T comparable\]\(lists ...\[\]T\) \[\]T](<#Difference>)
+- [func Every\[T any\]\(list \[\]T, fn PredicateFunc\[T\]\) bool](<#Every>)
+- [func Filter\[T any\]\(list \[\]T, fn PredicateFunc\[T\]\) \[\]T](<#Filter>)
+- [func Find\[T any\]\(list \[\]T, fn PredicateFunc\[T\]\) \(T, bool\)](<#Find>)
+- [func ForEach\[T comparable\]\(list \[\]T, fn func\(input T\)\)](<#ForEach>)
+- [func Map\[T comparable, K any\]\(list \[\]T, fn MapperFunc\[T, K\]\) \[\]K](<#Map>)
+- [func MapKeys\[T comparable, K any\]\(obj map\[T\]K\) \[\]T](<#MapKeys>)
+- [func MapOmitBy\[T comparable, K any\]\(obj map\[T\]K, fn PredicateFunc\[K\]\) map\[T\]K](<#MapOmitBy>)
+- [func MapOmitKeys\[T comparable, K any\]\(obj map\[T\]K, omits ...T\) map\[T\]K](<#MapOmitKeys>)
+- [func MapPickBy\[T comparable, K any\]\(obj map\[T\]K, fn PredicateFunc\[K\]\) map\[T\]K](<#MapPickBy>)
+- [func MapPickKeys\[T comparable, K any\]\(obj map\[T\]K, picks ...T\) map\[T\]K](<#MapPickKeys>)
+- [func MapValues\[T comparable, K any\]\(obj map\[T\]K\) \[\]K](<#MapValues>)
+- [func Reverse\[T comparable\]\(list \[\]T\) \[\]T](<#Reverse>)
+- [func Some\[T any\]\(list \[\]T, fn PredicateFunc\[T\]\) bool](<#Some>)
+- [func Union\[T comparable\]\(lists ...\[\]T\) \[\]T](<#Union>)
+- [func Unique\[T comparable\]\(list \[\]T\) \[\]T](<#Unique>)
+- [func Without\[T comparable\]\(list \[\]T, omit ...T\) \[\]T](<#Without>)
+- [type AnyFunc](<#AnyFunc>)
+  - [func Before\[T any\]\(n int, fn AnyFunc\[T\]\) AnyFunc\[T\]](<#Before>)
+- [type ComposeFunc](<#ComposeFunc>)
+  - [func Once\[T any\]\(fn ComposeFunc\[T\]\) ComposeFunc\[T\]](<#Once>)
+  - [func Pipe\[T any\]\(fns ...ComposeFunc\[T\]\) ComposeFunc\[T\]](<#Pipe>)
+  - [func Reduce\[T any\]\(list \[\]T, fn func\(prev T, next T\) T\) ComposeFunc\[T\]](<#Reduce>)
+- [type MapperFunc](<#MapperFunc>)
+- [type PredicateFunc](<#PredicateFunc>)
 
 
-## func [Chunk](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L114>)
+<a name="Chunk"></a>
+## func [Chunk](<https://github.com/code-gorilla-au/mewl/blob/main/slices.go#L114>)
 
 ```go
 func Chunk[T any](list []T, chunkSize int) [][]T
@@ -49,15 +50,15 @@ Chunk \- creates a new nested slice with slice elements chunked
 <details><summary>Example</summary>
 <p>
 
+
+
 ```go
-{
-	list := []int{1, 2, 3, 4, 5, 6}
+list := []int{1, 2, 3, 4, 5, 6}
 
-	got := Chunk(list, 2)
+got := Chunk(list, 2)
 
-	fmt.Println(got)
-
-}
+fmt.Println(got)
+// Output: [[1 2] [3 4] [5 6]]
 ```
 
 #### Output
@@ -69,7 +70,8 @@ Chunk \- creates a new nested slice with slice elements chunked
 </p>
 </details>
 
-## func [Difference](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L129>)
+<a name="Difference"></a>
+## func [Difference](<https://github.com/code-gorilla-au/mewl/blob/main/slices.go#L129>)
 
 ```go
 func Difference[T comparable](lists ...[]T) []T
@@ -80,15 +82,15 @@ Difference \- Creates an array of array values not included in the other given a
 <details><summary>Example</summary>
 <p>
 
+
+
 ```go
-{
-	list1 := []int{1, 2, 3}
-	list2 := []int{2, 3, 4}
-	got := Difference(list1, list2)
+list1 := []int{1, 2, 3}
+list2 := []int{2, 3, 4}
+got := Difference(list1, list2)
 
-	fmt.Println(got)
-
-}
+fmt.Println(got)
+// Output: [1 4]
 ```
 
 #### Output
@@ -100,7 +102,8 @@ Difference \- Creates an array of array values not included in the other given a
 </p>
 </details>
 
-## func [Every](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L81>)
+<a name="Every"></a>
+## func [Every](<https://github.com/code-gorilla-au/mewl/blob/main/slices.go#L81>)
 
 ```go
 func Every[T any](list []T, fn PredicateFunc[T]) bool
@@ -111,25 +114,25 @@ Every \- tests whether all elements in the array pass the test implemented by th
 <details><summary>Example</summary>
 <p>
 
+
+
 ```go
-{
-	list := []KeyVal{
-		{
-			Key:   "foo",
-			Value: "bar",
-		},
-		{
-			Key:   "bin",
-			Value: "baz",
-		},
-	}
-	ok := Every(list, func(item KeyVal) bool {
-		return item.Value != ""
-	})
-
-	fmt.Println(ok)
-
+list := []KeyVal{
+	{
+		Key:   "foo",
+		Value: "bar",
+	},
+	{
+		Key:   "bin",
+		Value: "baz",
+	},
 }
+ok := Every(list, func(item KeyVal) bool {
+	return item.Value != ""
+})
+
+fmt.Println(ok)
+// Output: true
 ```
 
 #### Output
@@ -141,7 +144,8 @@ true
 </p>
 </details>
 
-## func [Filter](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L4>)
+<a name="Filter"></a>
+## func [Filter](<https://github.com/code-gorilla-au/mewl/blob/main/slices.go#L4>)
 
 ```go
 func Filter[T any](list []T, fn PredicateFunc[T]) []T
@@ -152,25 +156,25 @@ Filter \- return a new list of elements that return true on the predicate func.
 <details><summary>Example</summary>
 <p>
 
+
+
 ```go
-{
-	list := []KeyVal{
-		{
-			Key:   "foo",
-			Value: "bar",
-		},
-		{
-			Key:   "bin",
-			Value: "baz",
-		},
-	}
-
-	got := Filter(list, func(item KeyVal) bool {
-		return item.Key == "foo"
-	})
-	fmt.Println(got)
-
+list := []KeyVal{
+	{
+		Key:   "foo",
+		Value: "bar",
+	},
+	{
+		Key:   "bin",
+		Value: "baz",
+	},
 }
+
+got := Filter(list, func(item KeyVal) bool {
+	return item.Key == "foo"
+})
+fmt.Println(got)
+// Output: [{foo bar}]
 ```
 
 #### Output
@@ -182,7 +186,8 @@ Filter \- return a new list of elements that return true on the predicate func.
 </p>
 </details>
 
-## func [Find](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L69>)
+<a name="Find"></a>
+## func [Find](<https://github.com/code-gorilla-au/mewl/blob/main/slices.go#L69>)
 
 ```go
 func Find[T any](list []T, fn PredicateFunc[T]) (T, bool)
@@ -193,25 +198,25 @@ Find \- returns the first element in the provided array that satisfies the provi
 <details><summary>Example</summary>
 <p>
 
+
+
 ```go
-{
-	list := []KeyVal{
-		{
-			Key:   "foo",
-			Value: "bar",
-		},
-		{
-			Key:   "bin",
-			Value: "baz",
-		},
-	}
-
-	got, ok := Find(list, func(item KeyVal) bool {
-		return item.Value == "bar"
-	})
-	fmt.Println(got, ok)
-
+list := []KeyVal{
+	{
+		Key:   "foo",
+		Value: "bar",
+	},
+	{
+		Key:   "bin",
+		Value: "baz",
+	},
 }
+
+got, ok := Find(list, func(item KeyVal) bool {
+	return item.Value == "bar"
+})
+fmt.Println(got, ok)
+// Output: {foo bar} true
 ```
 
 #### Output
@@ -223,7 +228,8 @@ Find \- returns the first element in the provided array that satisfies the provi
 </p>
 </details>
 
-## func [ForEach](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L26>)
+<a name="ForEach"></a>
+## func [ForEach](<https://github.com/code-gorilla-au/mewl/blob/main/slices.go#L26>)
 
 ```go
 func ForEach[T comparable](list []T, fn func(input T))
@@ -234,19 +240,19 @@ ForEach \- iterates over the list and invokes the function on the element.
 <details><summary>Example</summary>
 <p>
 
+
+
 ```go
-{
-	list := []int{1, 1, 2}
+list := []int{1, 1, 2}
 
-	total := 0
+total := 0
 
-	ForEach(list, func(item int) {
-		total += item
-	})
+ForEach(list, func(item int) {
+	total += item
+})
 
-	fmt.Println(total)
-
-}
+fmt.Println(total)
+// Output: 4
 ```
 
 #### Output
@@ -258,7 +264,8 @@ ForEach \- iterates over the list and invokes the function on the element.
 </p>
 </details>
 
-## func [Map](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L16>)
+<a name="Map"></a>
+## func [Map](<https://github.com/code-gorilla-au/mewl/blob/main/slices.go#L16>)
 
 ```go
 func Map[T comparable, K any](list []T, fn MapperFunc[T, K]) []K
@@ -269,28 +276,28 @@ Map \- creates a new array populated with the results of calling a provided func
 <details><summary>Example</summary>
 <p>
 
+
+
 ```go
-{
-	list := []KeyVal{
-		{
-			Key:   "foo",
-			Value: "bar",
-		},
-		{
-			Key:   "bin",
-			Value: "baz",
-		},
-	}
-
-	got := Map(list, func(item KeyVal) Val {
-		return Val{
-			Value: item.Value,
-		}
-	})
-
-	fmt.Println(got)
-
+list := []KeyVal{
+	{
+		Key:   "foo",
+		Value: "bar",
+	},
+	{
+		Key:   "bin",
+		Value: "baz",
+	},
 }
+
+got := Map(list, func(item KeyVal) Val {
+	return Val{
+		Value: item.Value,
+	}
+})
+
+fmt.Println(got)
+// Output: [{bar} {baz}]
 ```
 
 #### Output
@@ -302,6 +309,7 @@ Map \- creates a new array populated with the results of calling a provided func
 </p>
 </details>
 
+<a name="MapKeys"></a>
 ## func [MapKeys](<https://github.com/code-gorilla-au/mewl/blob/main/maps.go#L4>)
 
 ```go
@@ -313,19 +321,19 @@ Keys \- return map's keys
 <details><summary>Example</summary>
 <p>
 
+
+
 ```go
-{
-	obj := map[int]string{
-		1: "1",
-		2: "flash",
-	}
-
-	got := MapKeys(obj)
-	sort.Ints(got)
-
-	fmt.Println(got)
-
+obj := map[int]string{
+	1: "1",
+	2: "flash",
 }
+
+got := MapKeys(obj)
+sort.Ints(got)
+
+fmt.Println(got)
+// Output: [1 2]
 ```
 
 #### Output
@@ -337,6 +345,7 @@ Keys \- return map's keys
 </p>
 </details>
 
+<a name="MapOmitBy"></a>
 ## func [MapOmitBy](<https://github.com/code-gorilla-au/mewl/blob/main/maps.go#L31>)
 
 ```go
@@ -348,19 +357,19 @@ MapOmitBy \- returns a partial copy of an object omitting values based on a pred
 <details><summary>Example</summary>
 <p>
 
+
+
 ```go
-{
-	obj := map[string]int{
-		"hello": 1,
-		"world": 2,
-	}
-	got := MapOmitBy(obj, func(item int) bool {
-		return item == 1
-	})
-
-	fmt.Println(got)
-
+obj := map[string]int{
+	"hello": 1,
+	"world": 2,
 }
+got := MapOmitBy(obj, func(item int) bool {
+	return item == 1
+})
+
+fmt.Println(got)
+// Output: map[world:2]
 ```
 
 #### Output
@@ -372,6 +381,7 @@ map[world:2]
 </p>
 </details>
 
+<a name="MapOmitKeys"></a>
 ## func [MapOmitKeys](<https://github.com/code-gorilla-au/mewl/blob/main/maps.go#L23>)
 
 ```go
@@ -383,19 +393,19 @@ MapOmitKeys \- returns a partial copy of an object omitting the keys specified. 
 <details><summary>Example</summary>
 <p>
 
+
+
 ```go
-{
-	obj := map[string]int{
-		"hello": 1,
-		"world": 2,
-		"bin":   3,
-	}
-
-	got := MapOmitKeys(obj, "hello", "world")
-
-	fmt.Println(got)
-
+obj := map[string]int{
+	"hello": 1,
+	"world": 2,
+	"bin":   3,
 }
+
+got := MapOmitKeys(obj, "hello", "world")
+
+fmt.Println(got)
+// Output: map[bin:3]
 ```
 
 #### Output
@@ -407,6 +417,7 @@ map[bin:3]
 </p>
 </details>
 
+<a name="MapPickBy"></a>
 ## func [MapPickBy](<https://github.com/code-gorilla-au/mewl/blob/main/maps.go#L57>)
 
 ```go
@@ -418,19 +429,19 @@ MapPickKeys\- Returns a partial copy of an object containing only the keys speci
 <details><summary>Example</summary>
 <p>
 
+
+
 ```go
-{
-	obj := map[string]int{
-		"hello": 1,
-		"world": 2,
-	}
-	got := MapPickBy(obj, func(item int) bool {
-		return item == 1
-	})
-
-	fmt.Println(got)
-
+obj := map[string]int{
+	"hello": 1,
+	"world": 2,
 }
+got := MapPickBy(obj, func(item int) bool {
+	return item == 1
+})
+
+fmt.Println(got)
+// Output: map[hello:1]
 ```
 
 #### Output
@@ -442,6 +453,7 @@ map[hello:1]
 </p>
 </details>
 
+<a name="MapPickKeys"></a>
 ## func [MapPickKeys](<https://github.com/code-gorilla-au/mewl/blob/main/maps.go#L44>)
 
 ```go
@@ -453,19 +465,19 @@ MapPickKeys\- Returns a partial copy of an object containing only the keys speci
 <details><summary>Example</summary>
 <p>
 
+
+
 ```go
-{
-	obj := map[int]string{
-		1: "hello",
-		2: "world",
-		3: "bin",
-	}
-
-	got := MapPickKeys(obj, 1)
-
-	fmt.Println(got)
-
+obj := map[int]string{
+	1: "hello",
+	2: "world",
+	3: "bin",
 }
+
+got := MapPickKeys(obj, 1)
+
+fmt.Println(got)
+// Output: map[1:hello]
 ```
 
 #### Output
@@ -477,6 +489,7 @@ map[1:hello]
 </p>
 </details>
 
+<a name="MapValues"></a>
 ## func [MapValues](<https://github.com/code-gorilla-au/mewl/blob/main/maps.go#L13>)
 
 ```go
@@ -488,19 +501,19 @@ MapValues \- return map's values
 <details><summary>Example</summary>
 <p>
 
+
+
 ```go
-{
-	obj := map[int]string{
-		1: "hello",
-		2: "world",
-	}
-
-	got := MapValues(obj)
-	sort.Strings(got)
-
-	fmt.Println(got)
-
+obj := map[int]string{
+	1: "hello",
+	2: "world",
 }
+
+got := MapValues(obj)
+sort.Strings(got)
+
+fmt.Println(got)
+// Output: [hello world]
 ```
 
 #### Output
@@ -512,7 +525,8 @@ MapValues \- return map's values
 </p>
 </details>
 
-## func [Reverse](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L105>)
+<a name="Reverse"></a>
+## func [Reverse](<https://github.com/code-gorilla-au/mewl/blob/main/slices.go#L105>)
 
 ```go
 func Reverse[T comparable](list []T) []T
@@ -523,15 +537,15 @@ Reverse \- return slice in reverse order
 <details><summary>Example</summary>
 <p>
 
+
+
 ```go
-{
-	list := []int{1, 2, 3}
+list := []int{1, 2, 3}
 
-	got := Reverse(list)
+got := Reverse(list)
 
-	fmt.Println(got)
-
-}
+fmt.Println(got)
+// Output: [3 2 1]
 ```
 
 #### Output
@@ -543,7 +557,8 @@ Reverse \- return slice in reverse order
 </p>
 </details>
 
-## func [Some](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L174>)
+<a name="Some"></a>
+## func [Some](<https://github.com/code-gorilla-au/mewl/blob/main/slices.go#L174>)
 
 ```go
 func Some[T any](list []T, fn PredicateFunc[T]) bool
@@ -554,17 +569,17 @@ Some \- Checks if predicate returns truthy for any element of a list. Iteration 
 <details><summary>Example</summary>
 <p>
 
+
+
 ```go
-{
-	list := []int{1, 2, 3}
+list := []int{1, 2, 3}
 
-	got := Some(list, func(i int) bool {
-		return i == 2
-	})
+got := Some(list, func(i int) bool {
+	return i == 2
+})
 
-	fmt.Println(got)
-
-}
+fmt.Println(got)
+// Output: true
 ```
 
 #### Output
@@ -576,7 +591,8 @@ true
 </p>
 </details>
 
-## func [Union](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L49>)
+<a name="Union"></a>
+## func [Union](<https://github.com/code-gorilla-au/mewl/blob/main/slices.go#L49>)
 
 ```go
 func Union[T comparable](lists ...[]T) []T
@@ -587,30 +603,30 @@ Union \- merges two lists into a slice with no duplicates composed of the elemen
 <details><summary>Example</summary>
 <p>
 
+
+
 ```go
-{
-	id := "1"
-	value := "some value"
-	lists := [][]KeyVal{
+id := "1"
+value := "some value"
+lists := [][]KeyVal{
+	{
 		{
-			{
-				Key:   id,
-				Value: value,
-			},
+			Key:   id,
+			Value: value,
 		},
+	},
+	{
 		{
-			{
-				Key:   id,
-				Value: value,
-			},
+			Key:   id,
+			Value: value,
 		},
-	}
-
-	got := Union(lists...)
-
-	fmt.Println(got)
-
+	},
 }
+
+got := Union(lists...)
+
+fmt.Println(got)
+// Output: [{1 some value}]
 ```
 
 #### Output
@@ -622,7 +638,8 @@ Union \- merges two lists into a slice with no duplicates composed of the elemen
 </p>
 </details>
 
-## func [Unique](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L33>)
+<a name="Unique"></a>
+## func [Unique](<https://github.com/code-gorilla-au/mewl/blob/main/slices.go#L33>)
 
 ```go
 func Unique[T comparable](list []T) []T
@@ -633,28 +650,28 @@ Unique \- return unique items from a provided list
 <details><summary>Example</summary>
 <p>
 
+
+
 ```go
-{
-	list := []KeyVal{
-		{
-			Key:   "foo",
-			Value: "bar",
-		},
-		{
-			Key:   "foo",
-			Value: "bar",
-		},
-		{
-			Key:   "bin",
-			Value: "baz",
-		},
-	}
-
-	got := Unique(list)
-
-	fmt.Println(got)
-
+list := []KeyVal{
+	{
+		Key:   "foo",
+		Value: "bar",
+	},
+	{
+		Key:   "foo",
+		Value: "bar",
+	},
+	{
+		Key:   "bin",
+		Value: "baz",
+	},
 }
+
+got := Unique(list)
+
+fmt.Println(got)
+// Output: [{foo bar} {bin baz}]
 ```
 
 #### Output
@@ -666,7 +683,8 @@ Unique \- return unique items from a provided list
 </p>
 </details>
 
-## func [Without](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L158>)
+<a name="Without"></a>
+## func [Without](<https://github.com/code-gorilla-au/mewl/blob/main/slices.go#L158>)
 
 ```go
 func Without[T comparable](list []T, omit ...T) []T
@@ -677,18 +695,18 @@ Without \- Creates an array excluding all given values
 <details><summary>Example</summary>
 <p>
 
+
+
 ```go
-{
-	list := []KeyVal{
-		{Key: "foo", Value: "bar"},
-		{Key: "bin", Value: "baz"},
-	}
-
-	got := Without(list, KeyVal{Key: "bin", Value: "baz"})
-
-	fmt.Println(got)
-
+list := []KeyVal{
+	{Key: "foo", Value: "bar"},
+	{Key: "bin", Value: "baz"},
 }
+
+got := Without(list, KeyVal{Key: "bin", Value: "baz"})
+
+fmt.Println(got)
+// Output: [{foo bar}]
 ```
 
 #### Output
@@ -700,6 +718,7 @@ Without \- Creates an array excluding all given values
 </p>
 </details>
 
+<a name="AnyFunc"></a>
 ## type [AnyFunc](<https://github.com/code-gorilla-au/mewl/blob/main/types.go#L13>)
 
 AnyFunc \- function that receives n arguments
@@ -708,6 +727,7 @@ AnyFunc \- function that receives n arguments
 type AnyFunc[T any] func(args ...T) T
 ```
 
+<a name="Before"></a>
 ### func [Before](<https://github.com/code-gorilla-au/mewl/blob/main/functions.go#L32>)
 
 ```go
@@ -716,6 +736,7 @@ func Before[T any](n int, fn AnyFunc[T]) AnyFunc[T]
 
 Creates a function that invokes func while it's called less than n times. Subsequent calls to the created function return the result of the last func invocation.
 
+<a name="ComposeFunc"></a>
 ## type [ComposeFunc](<https://github.com/code-gorilla-au/mewl/blob/main/types.go#L4>)
 
 ComposeFunc \- function that receives an input and returns an input of the same type.
@@ -724,6 +745,7 @@ ComposeFunc \- function that receives an input and returns an input of the same 
 type ComposeFunc[T any] func(T) T
 ```
 
+<a name="Once"></a>
 ### func [Once](<https://github.com/code-gorilla-au/mewl/blob/main/functions.go#L16>)
 
 ```go
@@ -732,6 +754,7 @@ func Once[T any](fn ComposeFunc[T]) ComposeFunc[T]
 
 Once \- Creates a function that is restricted to invoking func once. Repeat calls to the function return the value of the first invocation
 
+<a name="Pipe"></a>
 ### func [Pipe](<https://github.com/code-gorilla-au/mewl/blob/main/functions.go#L4>)
 
 ```go
@@ -740,7 +763,8 @@ func Pipe[T any](fns ...ComposeFunc[T]) ComposeFunc[T]
 
 Pipe \- left to right function composition
 
-### func [Reduce](<https://github.com/code-gorilla-au/mewl/blob/main/array.go#L94>)
+<a name="Reduce"></a>
+### func [Reduce](<https://github.com/code-gorilla-au/mewl/blob/main/slices.go#L94>)
 
 ```go
 func Reduce[T any](list []T, fn func(prev T, next T) T) ComposeFunc[T]
@@ -751,19 +775,19 @@ Reduce \- executes a user\-supplied "reducer" callback function on each element 
 <details><summary>Example</summary>
 <p>
 
+
+
 ```go
-{
-	list := []int{1, 2, 3}
+list := []int{1, 2, 3}
 
-	add := Reduce(list, func(prev, current int) int {
-		return prev + current
-	})
+add := Reduce(list, func(prev, current int) int {
+	return prev + current
+})
 
-	got := add(1)
+got := add(1)
 
-	fmt.Println(got)
-
-}
+fmt.Println(got)
+// Output: 7
 ```
 
 #### Output
@@ -775,6 +799,7 @@ Reduce \- executes a user\-supplied "reducer" callback function on each element 
 </p>
 </details>
 
+<a name="MapperFunc"></a>
 ## type [MapperFunc](<https://github.com/code-gorilla-au/mewl/blob/main/types.go#L10>)
 
 MapperFunc \- transform function that receives an input and returns a new type.
@@ -783,6 +808,7 @@ MapperFunc \- transform function that receives an input and returns a new type.
 type MapperFunc[T any, K any] func(item T) K
 ```
 
+<a name="PredicateFunc"></a>
 ## type [PredicateFunc](<https://github.com/code-gorilla-au/mewl/blob/main/types.go#L7>)
 
 PredicateFunc \- function that receives an input and returns a boolean value.
@@ -790,8 +816,6 @@ PredicateFunc \- function that receives an input and returns a boolean value.
 ```go
 type PredicateFunc[T any] func(item T) bool
 ```
-
-
 
 Generated by [gomarkdoc](<https://github.com/princjef/gomarkdoc>)
 
