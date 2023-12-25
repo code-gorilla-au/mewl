@@ -188,26 +188,49 @@ func ExampleUnique() {
 }
 
 func TestFind_struct(t *testing.T) {
-	list := []KeyVal{
-		{
-			Key:   "foo",
-			Value: "bar",
-		},
-		{
-			Key:   "bin",
-			Value: "baz",
-		},
-	}
-
-	got, ok := Find(list, func(item KeyVal) bool {
-		return item.Value == "bar"
+	var list []KeyVal
+	group := odize.NewGroup(t, nil)
+	group.BeforeEach(func() {
+		list = []KeyVal{
+			{
+				Key:   "foo",
+				Value: "bar",
+			},
+			{
+				Key:   "bin",
+				Value: "baz",
+			},
+		}
 	})
-	if !ok {
-		t.Fatal("expected true, got false")
-	}
-	if got != list[0] {
-		t.Fatal("expected first element, got ", got)
-	}
+	group.AfterEach(func() {
+		list = []KeyVal{
+			{
+				Key:   "foo",
+				Value: "bar",
+			},
+			{
+				Key:   "bin",
+				Value: "baz",
+			},
+		}
+	})
+	err := group.
+		Test("should return the first item that matches the predicate", func(t *testing.T) {
+			got, ok := Find(list, func(item KeyVal, _ int, _ []KeyVal) bool {
+				return item.Value == "bar"
+			})
+			odize.AssertTrue(t, ok)
+			odize.AssertEqual(t, got, list[0])
+		}).
+		Test("should false if not able to find element within slice", func(t *testing.T) {
+			got, ok := Find(list, func(item KeyVal, _ int, _ []KeyVal) bool {
+				return item.Value == "silly"
+			})
+			odize.AssertFalse(t, ok)
+			odize.AssertNil(t, got)
+		}).
+		Run()
+	odize.AssertNoError(t, err)
 }
 
 func ExampleFind() {
@@ -222,52 +245,69 @@ func ExampleFind() {
 		},
 	}
 
-	got, ok := Find(list, func(item KeyVal) bool {
+	got, ok := Find(list, func(item KeyVal, _ int, _ []KeyVal) bool {
 		return item.Value == "bar"
 	})
 	fmt.Println(got, ok)
 	// Output: {foo bar} true
 }
 
-func TestFind_struct_not_found(t *testing.T) {
-	list := []KeyVal{
-		{
-			Key:   "foo",
-			Value: "bar",
-		},
-		{
-			Key:   "bin",
-			Value: "baz",
-		},
-	}
-
-	got, ok := Find(list, func(item KeyVal) bool {
-		return item.Value == "silly"
-	})
-	if ok {
-		t.Fatal("expected false, got true")
-	}
-	if got.Value != "" {
-		t.Fatal("expected zero value , got ", got)
-	}
-}
-
 func TestEvery_struct(t *testing.T) {
-	list := []KeyVal{
-		{
-			Key:   "foo",
-			Value: "bar",
-		},
-		{
-			Key:   "bin",
-			Value: "baz",
-		},
-	}
-	if ok := Every(list, func(item KeyVal) bool {
-		return item.Value != ""
-	}); !ok {
-		t.Fatal("expected true, got false")
-	}
+	var list []KeyVal
+	group := odize.NewGroup(t, nil)
+	group.BeforeEach(func() {
+		list = []KeyVal{
+			{
+				Key:   "foo",
+				Value: "bar",
+			},
+			{
+				Key:   "bin",
+				Value: "baz",
+			},
+		}
+	})
+	group.AfterEach(func() {
+		list = []KeyVal{
+			{
+				Key:   "foo",
+				Value: "bar",
+			},
+			{
+				Key:   "bin",
+				Value: "baz",
+			},
+		}
+	})
+
+	err := group.
+		Test("should return true if every item is not empty", func(t *testing.T) {
+			ok := Every(list, func(item KeyVal, _ int, _ []KeyVal) bool {
+				return item.Value != ""
+			})
+			odize.AssertTrue(t, ok)
+		}).
+		Test("should return false if an item does not match", func(t *testing.T) {
+			ok := Every(list, func(item KeyVal, _ int, _ []KeyVal) bool {
+				return item.Value == "frisky"
+			})
+			odize.AssertFalse(t, ok)
+		}).
+		Test("should mutate original list", func(t *testing.T) {
+			ok := Every(list, func(item KeyVal, idx int, originalList []KeyVal) bool {
+				originalList[idx] = KeyVal{
+					Key: "override",
+				}
+				return true
+			})
+			odize.AssertTrue(t, ok)
+			odize.AssertEqual(t, list[0].Key, "override")
+			odize.AssertEqual(t, list[1].Key, "override")
+		}).
+		Run()
+
+	odize.AssertNoError(t, err)
+
 }
 
 func ExampleEvery() {
@@ -281,30 +321,13 @@ func ExampleEvery() {
 			Value: "baz",
 		},
 	}
-	ok := Every(list, func(item KeyVal) bool {
+	// Note: the original slice is passed into the predicate function
+	ok := Every(list, func(item KeyVal, i int, originalSlice []KeyVal) bool {
 		return item.Value != ""
 	})
 
 	fmt.Println(ok)
 	// Output: true
-}
-
-func TestEvery_struct_no_match(t *testing.T) {
-	list := []KeyVal{
-		{
-			Key:   "foo",
-			Value: "bar",
-		},
-		{
-			Key:   "bin",
-			Value: "baz",
-		},
-	}
-	if ok := Every(list, func(item KeyVal) bool {
-		return item.Value == "frisky"
-	}); ok {
-		t.Fatal("expected false, got true")
-	}
 }
 
 func TestReduce_int(t *testing.T) {

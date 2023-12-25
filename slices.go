@@ -66,9 +66,9 @@ func Union[T comparable](lists ...[]T) []T {
 
 // Find - returns the first element in the provided array that satisfies the provided testing function.
 // If item is not found return nil value.
-func Find[T any](list []T, fn PredicateFunc[T]) (T, bool) {
-	for _, item := range list {
-		if fn(item) {
+func Find[T any](list []T, fn PredicateSliceFunc[T]) (T, bool) {
+	for index, item := range list {
+		if fn(item, index, list) {
 			return item, true
 		}
 	}
@@ -78,9 +78,9 @@ func Find[T any](list []T, fn PredicateFunc[T]) (T, bool) {
 }
 
 // Every - tests whether all elements in the array pass the test implemented by the provided function.
-func Every[T any](list []T, fn PredicateFunc[T]) bool {
-	for _, item := range list {
-		if !fn(item) {
+func Every[T any](list []T, fn PredicateSliceFunc[T]) bool {
+	for index, item := range list {
+		if !fn(item, index, list) {
 			return false
 		}
 	}
