@@ -539,17 +539,41 @@ func ExampleWithout() {
 func TestSome(t *testing.T) {
 	list := []int{1, 2, 3}
 
-	got := Some(list, func(i int) bool {
-		return i == 2
+	group := odize.NewGroup(t, nil)
+
+	group.AfterEach(func() {
+		list = []int{1, 2, 3}
 	})
-	odize.AssertEqual(t, true, got)
+
+	err := group.
+		Test("should return true if any item matches predicate", func(t *testing.T) {
+			got := Some(list, func(item, index int, slice []int) bool {
+				return item == 2
+			})
+			odize.AssertTrue(t, got)
+		}).
+		Test("should return true if all items match", func(t *testing.T) {
+			got := Some(list, func(item, index int, slice []int) bool {
+				return item <= 3
+			})
+			odize.AssertTrue(t, got)
+		}).
+		Test("should return false if no matches", func(t *testing.T) {
+			got := Some(list, func(item, index int, slice []int) bool {
+				return item > 10
+			})
+			odize.AssertFalse(t, got)
+		}).
+		Run()
+
+	odize.AssertNoError(t, err)
 }
 
 func ExampleSome() {
 	list := []int{1, 2, 3}
 
-	got := Some(list, func(i int) bool {
-		return i == 2
+	got := Some(list, func(item, index int, slice []int) bool {
+		return item == 2
 	})
 
 	fmt.Println(got)
