@@ -116,12 +116,29 @@ func TestForEach_struct(t *testing.T) {
 
 	total := 0
 
-	ForEach(list, func(item int) {
-		total += item
+	group := odize.NewGroup(t, nil)
+
+	group.AfterEach(func() {
+		total = 0
+		list = []int{1, 1, 2}
 	})
-	if total != 4 {
-		t.Fatal("expected 4, got ", total)
-	}
+
+	err := group.
+		Test("should add total of 4", func(t *testing.T) {
+			ForEach(list, func(item int, _ int, _ []int) {
+				total += item
+			})
+			odize.AssertEqual(t, 4, total)
+		}).
+		Test("should add total of -4", func(t *testing.T) {
+			ForEach(list, func(item int, _ int, _ []int) {
+				total -= item
+			})
+			odize.AssertEqual(t, -4, total)
+		}).
+		Run()
+
+	odize.AssertNoError(t, err)
 }
 
 func ExampleForEach() {
@@ -129,7 +146,7 @@ func ExampleForEach() {
 
 	total := 0
 
-	ForEach(list, func(item int) {
+	ForEach(list, func(item int, _ int, _ []int) {
 		total += item
 	})
 

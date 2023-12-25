@@ -23,9 +23,9 @@ func Map[T comparable, K any](list []T, fn MapperFunc[T, K]) []K {
 }
 
 // ForEach - iterates over the list and invokes the function on the element.
-func ForEach[T comparable](list []T, fn func(input T)) {
-	for _, item := range list {
-		fn(item)
+func ForEach[T comparable](list []T, fn CallbackSliceFunc[T]) {
+	for index, item := range list {
+		fn(item, index, list)
 	}
 }
 

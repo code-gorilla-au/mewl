@@ -3,6 +3,9 @@ package mewl
 // ComposeFunc - function that receives an input and returns an input of the same type.
 type ComposeFunc[T any] func(T) T
 
+// CallbackSliceFunc - function that receives an index of the current item, current item being iterated on and the array Every was called upon.
+type CallbackSliceFunc[T any] func(item T, index int, slice []T)
+
 // PredicateFunc - function that receives an input and returns a boolean value.
 type PredicateFunc[T any] func(item T) bool
 

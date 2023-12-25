@@ -14,7 +14,7 @@ func TestMapKeys(t *testing.T) {
 
 	got := MapKeys(map[string]int{"1": 1, "2": 2})
 
-	ForEach(want, func(item string) {
+	ForEach(want, func(item string, _ int, _ []string) {
 		odize.AssertTrue(t, slices.Contains(got, item))
 	})
 }
@@ -37,7 +37,7 @@ func TestMapValues(t *testing.T) {
 
 	got := MapValues(map[string]int{"1": 1, "2": 2, "3": 3})
 
-	ForEach(want, func(item int) {
+	ForEach(want, func(item int, _ int, _ []int) {
 		odize.AssertTrue(t, slices.Contains(got, item))
 	})
 }
