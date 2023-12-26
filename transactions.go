@@ -24,6 +24,21 @@ type TxnStep[T any] struct {
 	rollback TxnFunc[T]
 }
 
+// NewTxn - creates a new transaction.
+//
+// Example:
+//
+// txn := NewTxn(state)
+//
+// result, err := txn.
+//
+//	Step(
+//		func(s state) (state, error) {
+//		state + 1
+//		},
+//		func(s state) (state, error) {
+//			state - 1
+//		}).Run()
 func NewTxn[T any](state T) *Txn[T] {
 	return &Txn[T]{
 		txnState: TxnState[T]{
