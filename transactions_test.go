@@ -21,7 +21,7 @@ func TestTxn(t *testing.T) {
 
 	err := group.
 		Test("should run all steps and return result", func(t *testing.T) {
-			txn := NewTxn(state)
+			txn := NewTxn(state, TxnOptVerbose[testState]())
 			result, err := txn.Step(
 				func(ts testState) (testState, error) {
 					ts.Name = "world"

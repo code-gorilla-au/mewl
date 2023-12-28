@@ -126,15 +126,15 @@ func (t *Txn[T]) log(msg string) {
 	fmt.Println(msg)
 }
 
-// FailFast - if set to true, the transaction will stop at the first error.
-func FailFast[T any]() TxnOpts[T] {
+// TxnOptFailFast - if set to true, the transaction will stop at the first error.
+func TxnOptFailFast[T any]() TxnOpts[T] {
 	return func(t *Txn[T]) {
 		t.failFast = true
 	}
 }
 
-// Verbose - if set to true, the transaction will log out the steps as they are run.
-func Verbose[T any]() TxnOpts[T] {
+// TxnOptVerbose - if set to true, the transaction will log out the steps as they are run.
+func TxnOptVerbose[T any]() TxnOpts[T] {
 	return func(t *Txn[T]) {
 		t.verbose = true
 	}
