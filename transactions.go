@@ -30,7 +30,7 @@ type TxnStep[T any] struct {
 
 type TxnOpts[T any] func(*Txn[T])
 
-// NewTxn - creates a new transaction.
+// NewTxn - creates a new transaction. Txn implements a basic saga pattern which manages state between steps and rollback.
 func NewTxn[T any](state T, opts ...TxnOpts[T]) *Txn[T] {
 
 	t := &Txn[T]{

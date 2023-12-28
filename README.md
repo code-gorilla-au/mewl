@@ -40,10 +40,13 @@ import "github.com/code-gorilla-au/mewl"
 - [type PredicateFunc](<#PredicateFunc>)
 - [type PredicateSliceFunc](<#PredicateSliceFunc>)
 - [type Txn](<#Txn>)
-  - [func NewTxn\[T any\]\(state T\) \*Txn\[T\]](<#NewTxn>)
+  - [func NewTxn\[T any\]\(state T, opts ...TxnOpts\[T\]\) \*Txn\[T\]](<#NewTxn>)
   - [func \(t \*Txn\[T\]\) Run\(\) \(T, error\)](<#Txn[T].Run>)
   - [func \(t \*Txn\[T\]\) Step\(handler TxnFunc\[T\], rollback TxnFunc\[T\]\) \*Txn\[T\]](<#Txn[T].Step>)
 - [type TxnFunc](<#TxnFunc>)
+- [type TxnOpts](<#TxnOpts>)
+  - [func TxnOptFailFast\[T any\]\(\) TxnOpts\[T\]](<#TxnOptFailFast>)
+  - [func TxnOptVerbose\[T any\]\(\) TxnOpts\[T\]](<#TxnOptVerbose>)
 - [type TxnState](<#TxnState>)
 - [type TxnStep](<#TxnStep>)
 
@@ -881,28 +884,67 @@ type PredicateSliceFunc[T any] func(item T, index int, slice []T) bool
 ```
 
 <a name="Txn"></a>
-## type [Txn](<https://github.com/code-gorilla-au/mewl/blob/main/transactions.go#L8-L13>)
+## type [Txn](<https://github.com/code-gorilla-au/mewl/blob/main/transactions.go#L8-L17>)
 
 
 
 ```go
 type Txn[T any] struct {
-    Steps []TxnStep[T]
     // contains filtered or unexported fields
 }
 ```
 
-<a name="NewTxn"></a>
-### func [NewTxn](<https://github.com/code-gorilla-au/mewl/blob/main/transactions.go#L28>)
+<details><summary>Example</summary>
+<p>
+
+
 
 ```go
-func NewTxn[T any](state T) *Txn[T]
+type testState struct {
+	Name string
+}
+
+state := testState{Name: "hello"}
+
+txn := NewTxn(state)
+result, err := txn.Step(
+	func(ts testState) (testState, error) {
+		ts.Name = "world"
+		return ts, nil
+	},
+	func(ts testState) (testState, error) {
+		ts.Name = "failed"
+		return ts, nil
+	},
+).Run()
+if err != nil {
+	panic(err)
+}
+
+fmt.Println(result.Name)
+// Output: world
 ```
 
-NewTxn \- creates a new transaction.
+#### Output
+
+```
+world
+```
+
+</p>
+</details>
+
+<a name="NewTxn"></a>
+### func [NewTxn](<https://github.com/code-gorilla-au/mewl/blob/main/transactions.go#L34>)
+
+```go
+func NewTxn[T any](state T, opts ...TxnOpts[T]) *Txn[T]
+```
+
+NewTxn \- creates a new transaction. Txn implements a basic saga pattern which manages state between steps and rollback.
 
 <a name="Txn[T].Run"></a>
-### func \(\*Txn\[T\]\) [Run](<https://github.com/code-gorilla-au/mewl/blob/main/transactions.go#L48>)
+### func \(\*Txn\[T\]\) [Run](<https://github.com/code-gorilla-au/mewl/blob/main/transactions.go#L61>)
 
 ```go
 func (t *Txn[T]) Run() (T, error)
@@ -911,7 +953,7 @@ func (t *Txn[T]) Run() (T, error)
 Errors caught within the steps and rollback funcs will be able to be unwrapped and inspected using Unwrap\(\) \[\]error.
 
 <a name="Txn[T].Step"></a>
-### func \(\*Txn\[T\]\) [Step](<https://github.com/code-gorilla-au/mewl/blob/main/transactions.go#L39>)
+### func \(\*Txn\[T\]\) [Step](<https://github.com/code-gorilla-au/mewl/blob/main/transactions.go#L52>)
 
 ```go
 func (t *Txn[T]) Step(handler TxnFunc[T], rollback TxnFunc[T]) *Txn[T]
@@ -920,7 +962,7 @@ func (t *Txn[T]) Step(handler TxnFunc[T], rollback TxnFunc[T]) *Txn[T]
 Step \- adds a step to the transaction workflow. All steps must have a handler and a rollback func.
 
 <a name="TxnFunc"></a>
-## type [TxnFunc](<https://github.com/code-gorilla-au/mewl/blob/main/transactions.go#L20>)
+## type [TxnFunc](<https://github.com/code-gorilla-au/mewl/blob/main/transactions.go#L24>)
 
 
 
@@ -928,8 +970,35 @@ Step \- adds a step to the transaction workflow. All steps must have a handler a
 type TxnFunc[T any] func(T) (T, error)
 ```
 
+<a name="TxnOpts"></a>
+## type [TxnOpts](<https://github.com/code-gorilla-au/mewl/blob/main/transactions.go#L31>)
+
+
+
+```go
+type TxnOpts[T any] func(*Txn[T])
+```
+
+<a name="TxnOptFailFast"></a>
+### func [TxnOptFailFast](<https://github.com/code-gorilla-au/mewl/blob/main/transactions.go#L130>)
+
+```go
+func TxnOptFailFast[T any]() TxnOpts[T]
+```
+
+TxnOptFailFast \- if set to true, the transaction will stop at the first error.
+
+<a name="TxnOptVerbose"></a>
+### func [TxnOptVerbose](<https://github.com/code-gorilla-au/mewl/blob/main/transactions.go#L137>)
+
+```go
+func TxnOptVerbose[T any]() TxnOpts[T]
+```
+
+TxnOptVerbose \- if set to true, the transaction will log out the steps as they are run.
+
 <a name="TxnState"></a>
-## type [TxnState](<https://github.com/code-gorilla-au/mewl/blob/main/transactions.go#L15-L18>)
+## type [TxnState](<https://github.com/code-gorilla-au/mewl/blob/main/transactions.go#L19-L22>)
 
 
 
@@ -940,7 +1009,7 @@ type TxnState[T any] struct {
 ```
 
 <a name="TxnStep"></a>
-## type [TxnStep](<https://github.com/code-gorilla-au/mewl/blob/main/transactions.go#L22-L25>)
+## type [TxnStep](<https://github.com/code-gorilla-au/mewl/blob/main/transactions.go#L26-L29>)
 
 
 

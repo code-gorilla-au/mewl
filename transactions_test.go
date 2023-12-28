@@ -189,3 +189,29 @@ func TestTxn(t *testing.T) {
 
 	odize.AssertNoError(t, err)
 }
+
+func ExampleTxn() {
+	type testState struct {
+		Name string
+	}
+
+	state := testState{Name: "hello"}
+
+	txn := NewTxn(state)
+	result, err := txn.Step(
+		func(ts testState) (testState, error) {
+			ts.Name = "world"
+			return ts, nil
+		},
+		func(ts testState) (testState, error) {
+			ts.Name = "failed"
+			return ts, nil
+		},
+	).Run()
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(result.Name)
+	// Output: world
+}
