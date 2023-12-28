@@ -8,8 +8,12 @@ import (
 type Txn[T any] struct {
 	txnState TxnState[T]
 	errors   []error
-	Steps    []TxnStep[T]
+	steps    []TxnStep[T]
+
+	// failFast - if set to true, the transaction will stop at the first error.
 	failFast bool
+	// verbose - if set to true, the transaction will log out the steps as they are run.
+	verbose bool
 }
 
 type TxnState[T any] struct {
@@ -24,20 +28,29 @@ type TxnStep[T any] struct {
 	rollback TxnFunc[T]
 }
 
+type TxnOpts[T any] func(*Txn[T])
+
 // NewTxn - creates a new transaction.
-func NewTxn[T any](state T) *Txn[T] {
-	return &Txn[T]{
+func NewTxn[T any](state T, opts ...TxnOpts[T]) *Txn[T] {
+
+	t := &Txn[T]{
 		txnState: TxnState[T]{
 			state:       &state,
 			currentStep: 0,
 		},
 	}
+
+	for _, opt := range opts {
+		opt(t)
+	}
+
+	return t
 }
 
 // Step - adds a step to the transaction workflow.
 // All steps must have a handler and a rollback func.
 func (t *Txn[T]) Step(handler TxnFunc[T], rollback TxnFunc[T]) *Txn[T] {
-	t.Steps = append(t.Steps, TxnStep[T]{handler: handler, rollback: rollback})
+	t.steps = append(t.steps, TxnStep[T]{handler: handler, rollback: rollback})
 	return t
 }
 
@@ -48,14 +61,18 @@ func (t *Txn[T]) Step(handler TxnFunc[T], rollback TxnFunc[T]) *Txn[T] {
 func (t *Txn[T]) Run() (T, error) {
 	var err error
 
-	for index, step := range t.Steps {
-		fmt.Println("count", index)
+	t.log(fmt.Sprintf("starting transaction with %d steps", len(t.steps)))
+	for index, step := range t.steps {
+
 		t.txnState.currentStep = index
+		logStep := index + 1
+		t.log(fmt.Sprintf("step %d: executing", logStep))
 
 		*t.txnState.state, err = step.handler(*t.txnState.state)
-
 		if err != nil {
-			errWithCtx := fmt.Errorf("step failed at step %d: %w", index+1, err)
+			t.log(fmt.Sprintf("step %d execution failed: %s, rolling back", logStep, err))
+
+			errWithCtx := fmt.Errorf("step failed at step %d: %w", logStep, err)
 			t.errors = append(t.errors, errWithCtx)
 
 			if err := t.rollback(); err != nil {
@@ -65,6 +82,8 @@ func (t *Txn[T]) Run() (T, error) {
 
 			return *t.txnState.state, errors.Join(t.errors...)
 		}
+
+		t.log(fmt.Sprintf("step %d: complete", logStep))
 	}
 
 	return *t.txnState.state, nil
@@ -75,11 +94,16 @@ func (t *Txn[T]) Run() (T, error) {
 func (t *Txn[T]) rollback() error {
 	var err error
 	for i := t.txnState.currentStep; i >= 0; i-- {
-		step := t.Steps[i]
+		logStep := i + 1
+		step := t.steps[i]
+
+		t.log(fmt.Sprintf("rollback step %d: executing", logStep))
 
 		*t.txnState.state, err = step.rollback(*t.txnState.state)
 		if err != nil {
-			errWithCtx := fmt.Errorf("rollback failed at step %d: %w", i+1, err)
+			t.log(fmt.Sprintf("rollback step %d: failed: %s", logStep, err))
+
+			errWithCtx := fmt.Errorf("rollback failed at step %d: %w", logStep, err)
 			if t.failFast {
 				return errWithCtx
 			}
@@ -87,7 +111,31 @@ func (t *Txn[T]) rollback() error {
 			// add it to the list, but continue with rollback
 			t.errors = append(t.errors, errWithCtx)
 		}
+
+		t.log(fmt.Sprintf("rollback step %d: complete", logStep))
 	}
 
 	return nil
+}
+
+func (t *Txn[T]) log(msg string) {
+	if !t.verbose {
+		return
+	}
+
+	fmt.Println(msg)
+}
+
+// FailFast - if set to true, the transaction will stop at the first error.
+func FailFast[T any]() TxnOpts[T] {
+	return func(t *Txn[T]) {
+		t.failFast = true
+	}
+}
+
+// Verbose - if set to true, the transaction will log out the steps as they are run.
+func Verbose[T any]() TxnOpts[T] {
+	return func(t *Txn[T]) {
+		t.verbose = true
+	}
 }
