@@ -1,6 +1,7 @@
 package mewl
 
 import (
+	"errors"
 	"fmt"
 	"testing"
 
@@ -80,7 +81,7 @@ func TestTxn(t *testing.T) {
 					return ts, nil
 				},
 			).Run()
-			odize.AssertEqual(t, err.Error(), fmt.Errorf("step failed at step 1: expected failure").Error())
+			odize.AssertEqual(t, fmt.Errorf("step failed: step 1: expected failure").Error(), err.Error())
 
 			odize.AssertEqual(t, "failed", result.Name)
 
@@ -112,7 +113,7 @@ func TestTxn(t *testing.T) {
 					},
 				).
 				Run()
-			odize.AssertEqual(t, fmt.Errorf("step failed at step 1: expected failure").Error(), err.Error())
+			odize.AssertEqual(t, fmt.Errorf("step failed: step 1: expected failure").Error(), err.Error())
 
 			odize.AssertEqual(t, "failed", result.Name)
 			odize.AssertEqual(t, 0, nextStepCall)
@@ -144,9 +145,44 @@ func TestTxn(t *testing.T) {
 					},
 				).
 				Run()
-			odize.AssertEqual(t, fmt.Errorf("step failed at step 2: expected failure").Error(), err.Error())
+			odize.AssertEqual(t, fmt.Errorf("step failed: step 2: expected failure").Error(), err.Error())
 
 			odize.AssertEqual(t, 2, rollbackCall)
+
+		}).
+		Test("should only report first rollback error on fail fast", func(t *testing.T) {
+			rollbackCall := 0
+
+			expectedErr := fmt.Errorf("rollback fail step 2")
+
+			txn := NewTxn(state, TxnOptFailFast[testState]())
+			_, err := txn.
+				Step(
+					func(ts testState) (testState, error) {
+						ts.Name = "world"
+						return ts, nil
+					},
+					func(ts testState) (testState, error) {
+						rollbackCall++
+
+						return ts, fmt.Errorf("rollback fail step 1")
+					},
+				).
+				Step(
+					func(ts testState) (testState, error) {
+						ts.Name = "bin"
+						return ts, fmt.Errorf("expected failure")
+					},
+					func(ts testState) (testState, error) {
+						rollbackCall++
+						return ts, expectedErr
+					},
+				).
+				Run()
+			odize.AssertTrue(t, errors.Is(err, expectedErr))
+			odize.AssertFalse(t, errors.Is(err, fmt.Errorf("rollback fail step 1")))
+
+			odize.AssertEqual(t, 1, rollbackCall)
 
 		}).
 		Run()

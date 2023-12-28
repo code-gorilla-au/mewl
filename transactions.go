@@ -70,9 +70,9 @@ func (t *Txn[T]) Run() (T, error) {
 
 		*t.txnState.state, err = step.handler(*t.txnState.state)
 		if err != nil {
-			t.log(fmt.Sprintf("step %d execution failed: %s, rolling back", logStep, err))
+			t.log(fmt.Sprintf("step %d execution failed: step %s, rolling back", logStep, err))
 
-			errWithCtx := fmt.Errorf("step failed at step %d: %w", logStep, err)
+			errWithCtx := fmt.Errorf("step failed: step %d: %w", logStep, err)
 			t.errors = append(t.errors, errWithCtx)
 
 			if err := t.rollback(); err != nil {
@@ -103,7 +103,7 @@ func (t *Txn[T]) rollback() error {
 		if err != nil {
 			t.log(fmt.Sprintf("rollback step %d: failed: %s", logStep, err))
 
-			errWithCtx := fmt.Errorf("rollback failed at step %d: %w", logStep, err)
+			errWithCtx := fmt.Errorf("rollback failed: step %d: %w", logStep, err)
 			if t.failFast {
 				return errWithCtx
 			}
