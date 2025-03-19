@@ -4,7 +4,7 @@ import "slices"
 
 // MapClone clones provided map
 func MapClone[T comparable, K any](obj map[T]K) map[T]K {
-	result := make(map[T]K, 0)
+	result := make(map[T]K, len(obj))
 	for key, value := range obj {
 		result[key] = value
 	}

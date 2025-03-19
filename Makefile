@@ -13,8 +13,15 @@ MAKE_LIB:=$(PROJECT_ROOT)/scripts
 -include $(MAKE_LIB)/lints.mk
 -include $(MAKE_LIB)/tools.mk
 
+COVER_OUTPUT_RAW := coverage.out
+COVER_OUTPUT_HTML := coverage.html
+
 test: lint scan ## Run unit tests
 	go test --short -cover -failfast ./...
+
+
+test-watch: ## Run unit tests in watch mode
+	@gow test -coverprofile $(COVER_OUTPUT_RAW) --short -cover -failfast ./...
 
 scan: ## run security scan
 	gosec ./...
